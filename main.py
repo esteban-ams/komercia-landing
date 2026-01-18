@@ -3,10 +3,20 @@ Komercia Landing Page
 FastHTML + HTMX + Alpine.js
 """
 from fasthtml.common import *
+from starlette.responses import FileResponse, Response
+from pathlib import Path
 import os
+from dotenv import load_dotenv
+import resend
+
+# Cargar variables de entorno
+load_dotenv()
+
+# Configurar Resend
+resend.api_key = os.getenv("RESEND_API_KEY")
 
 # Importar componentes
-from components.layout import PageLayout, POSPageLayout, Navbar, Footer
+from components.layout import PageLayout, POSPageLayout, CloudPageLayout, Navbar, Footer
 from components.sections import (
     HeroSection,
     ServicesSection,
@@ -28,18 +38,40 @@ from components.sections_pos import (
     POSCTASection,
     SupportSection
 )
+from components.sections_cloud import (
+    CloudHeroSection,
+    HowItWorksSection,
+    CloudBenefitsSection,
+    DashboardPreviewSection,
+    CloudPricingSection,
+    UseCasesSection,
+    CloudCTASection,
+    CloudFAQSection
+)
 
 # ============================================================================
 # APP SETUP
 # ============================================================================
 
+# Path for static files
+STATIC_PATH = Path(__file__).resolve().parent / 'static'
+
 app, rt = fast_app(
     pico=False,
-    static_path='static',
+    secret_key=os.getenv("SECRET_KEY", "komercia-landing-default-key-change-in-prod"),
     hdrs=(
         Link(rel='stylesheet', href='/static/css/styles.css'),
     )
 )
+
+
+# Explicit route for static files (required for gunicorn/uvicorn)
+@rt('/static/{path:path}')
+async def static_files(path: str):
+    file_path = STATIC_PATH / path
+    if file_path.exists() and file_path.is_file():
+        return FileResponse(file_path)
+    return Response('Not found', status_code=404)
 
 
 # ============================================================================
@@ -81,6 +113,23 @@ def pos_page():
     )
 
 
+@rt('/cloud', methods=['GET'])
+def cloud_page():
+    """Página de Komercia Cloud - SaaS"""
+    return CloudPageLayout(
+        CloudHeroSection(),
+        HowItWorksSection(),
+        CloudBenefitsSection(),
+        UseCasesSection(),
+        DashboardPreviewSection(),
+        CloudPricingSection(),
+        CloudFAQSection(),
+        CloudCTASection(),
+        title="Komercia Cloud - Gestiona tu Minimarket desde Cualquier Lugar",
+        description="Software en la nube para minimarkets. Controla ventas, inventario y reportes desde tu celular. 14 días gratis."
+    )
+
+
 # ============================================================================
 # API ENDPOINTS (HTMX)
 # ============================================================================
@@ -98,18 +147,70 @@ async def contact_form(request):
     mensaje = form_data.get('mensaje', '')
     newsletter = form_data.get('newsletter', False)
 
-    # Aquí iría la lógica de envío de email con Resend
-    # Por ahora, solo retornamos un mensaje de éxito
+    # Mapeo de valores de interés
+    interes_labels = {
+        "pos": "Komercia POS (Hardware + Software)",
+        "cloud": "Komercia Cloud (SaaS)",
+        "both": "Ambos (POS + Cloud)",
+        "other": "Otro / Consulta general"
+    }
+    interes_text = interes_labels.get(interes, interes)
 
-    # TODO: Integrar Resend para envío de emails
-    # import resend
-    # resend.api_key = os.environ.get("RESEND_API_KEY")
-    # resend.Emails.send({
-    #     "from": "onboarding@resend.dev",
-    #     "to": "contacto@komercia.cl",
-    #     "subject": f"Nuevo contacto: {nombre}",
-    #     "html": f"..."
-    # })
+    # Enviar email con Resend
+    try:
+        resend.Emails.send({
+            "from": os.getenv("RESEND_FROM_EMAIL", "onboarding@resend.dev"),
+            "to": os.getenv("CONTACT_EMAIL"),
+            "subject": f"Nuevo contacto de Komercia: {nombre}",
+            "html": f"""
+            <h2>Nuevo mensaje de contacto</h2>
+            <table style="border-collapse: collapse; width: 100%; max-width: 600px;">
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Nombre:</strong></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">{nombre}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Email:</strong></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><a href="mailto:{email}">{email}</a></td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Teléfono:</strong></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">{telefono or 'No proporcionado'}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Empresa:</strong></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">{empresa or 'No proporcionada'}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Interés:</strong></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">{interes_text}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Newsletter:</strong></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">{'Sí' if newsletter else 'No'}</td>
+                </tr>
+            </table>
+            <h3 style="margin-top: 20px;">Mensaje:</h3>
+            <p style="background: #f5f5f5; padding: 15px; border-radius: 8px;">{mensaje or 'Sin mensaje adicional'}</p>
+            <hr style="margin-top: 30px; border: none; border-top: 1px solid #eee;">
+            <p style="color: #888; font-size: 12px;">Este mensaje fue enviado desde el formulario de contacto de Komercia.</p>
+            """
+        })
+    except Exception as e:
+        # Log del error (en producción usarías un logger apropiado)
+        print(f"Error enviando email: {e}")
+        return Div(
+            Div(
+                I(cls="icon icon-alert-circle error-icon"),
+                H3("Error al enviar", cls="error-title"),
+                P(
+                    "Hubo un problema al enviar tu mensaje. Por favor intenta de nuevo o contáctanos directamente.",
+                    cls="error-text"
+                ),
+                cls="form-error"
+            ),
+            cls="contact-form-wrapper"
+        )
 
     return Div(
         Div(
@@ -222,7 +323,24 @@ async def newsletter_signup(request):
     form_data = await request.form()
     email = form_data.get('email', '')
 
-    # TODO: Integrar con servicio de email marketing
+    # Enviar notificación de nueva suscripción
+    try:
+        resend.Emails.send({
+            "from": os.getenv("RESEND_FROM_EMAIL", "onboarding@resend.dev"),
+            "to": os.getenv("CONTACT_EMAIL"),
+            "subject": f"Nueva suscripción al newsletter: {email}",
+            "html": f"""
+            <h2>Nueva suscripción al newsletter</h2>
+            <p>El siguiente email se ha suscrito al newsletter de Komercia:</p>
+            <p style="font-size: 18px; background: #f5f5f5; padding: 15px; border-radius: 8px;">
+                <a href="mailto:{email}">{email}</a>
+            </p>
+            <hr style="margin-top: 30px; border: none; border-top: 1px solid #eee;">
+            <p style="color: #888; font-size: 12px;">Suscripción desde el footer de Komercia.</p>
+            """
+        })
+    except Exception as e:
+        print(f"Error enviando notificación de newsletter: {e}")
 
     return Div(
         Div(

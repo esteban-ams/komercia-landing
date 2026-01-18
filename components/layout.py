@@ -17,7 +17,7 @@ def Navbar(**kwargs):
     """
     nav_links = [
         {"text": "POS", "href": "/pos"},
-        {"text": "Servicios", "href": "#servicios"},
+        {"text": "Cloud", "href": "/cloud"},
         {"text": "Precios", "href": "#precios"},
         {"text": "Nosotros", "href": "#nosotros"},
         {"text": "FAQ", "href": "#faq"},
@@ -50,8 +50,8 @@ def Navbar(**kwargs):
                 Span(cls="hamburger-line"),
                 Span(cls="hamburger-line"),
                 cls="nav-hamburger",
-                x_on_click="mobileMenuOpen = !mobileMenuOpen",
-                aria_label="Menú"
+                aria_label="Menú",
+                **{"@click": "mobileMenuOpen = !mobileMenuOpen"}
             ),
 
             cls="nav-container container"
@@ -60,7 +60,7 @@ def Navbar(**kwargs):
         # Mobile menu
         Div(
             Div(
-                *[A(link["text"], href=link["href"], cls="mobile-nav-link", x_on_click="mobileMenuOpen = false") for link in nav_links],
+                *[A(link["text"], href=link["href"], cls="mobile-nav-link", **{"@click": "mobileMenuOpen = false"}) for link in nav_links],
                 Hr(cls="mobile-nav-divider"),
                 A("Iniciar sesión", href="#", cls="mobile-nav-link"),
                 Button("Contactar", variant="primary", full_width=True, href="#contacto"),
@@ -68,14 +68,12 @@ def Navbar(**kwargs):
             ),
             cls="mobile-nav",
             x_show="mobileMenuOpen",
-            x_transition_enter="mobile-nav-enter",
-            x_transition_leave="mobile-nav-leave",
-            x_on_click_away="mobileMenuOpen = false"
+            x_transition=True,
+            **{"@click.away": "mobileMenuOpen = false"}
         ),
 
         cls="navbar",
         x_data="{ mobileMenuOpen: false }",
-        x_bind_class="{ 'nav-scrolled': scrolled }",
         **kwargs
     )
 
@@ -94,8 +92,7 @@ def Footer(**kwargs):
             "title": "Productos",
             "links": [
                 {"text": "Komercia POS", "href": "/pos"},
-                {"text": "Komercia Cloud", "href": "#servicios"},
-                # {"text": "Komercia API", "href": "#servicios"},
+                {"text": "Komercia Cloud", "href": "/cloud"},
                 {"text": "Hardware", "href": "/pos#paquetes"},
             ]
         },
@@ -391,8 +388,8 @@ def POSNavbar(**kwargs):
                 Span(cls="hamburger-line"),
                 Span(cls="hamburger-line"),
                 cls="nav-hamburger",
-                x_on_click="mobileMenuOpen = !mobileMenuOpen",
-                aria_label="Menú"
+                aria_label="Menú",
+                **{"@click": "mobileMenuOpen = !mobileMenuOpen"}
             ),
 
             cls="nav-container container"
@@ -401,7 +398,7 @@ def POSNavbar(**kwargs):
         # Mobile menu
         Div(
             Div(
-                *[A(link["text"], href=link["href"], cls="mobile-nav-link", x_on_click="mobileMenuOpen = false") for link in nav_links],
+                *[A(link["text"], href=link["href"], cls="mobile-nav-link", **{"@click": "mobileMenuOpen = false"}) for link in nav_links],
                 Hr(cls="mobile-nav-divider"),
                 A("Ver Cloud", href="/cloud", cls="mobile-nav-link"),
                 Button("Cotizar", variant="primary", full_width=True, href="#paquetes"),
@@ -409,14 +406,148 @@ def POSNavbar(**kwargs):
             ),
             cls="mobile-nav",
             x_show="mobileMenuOpen",
-            x_transition_enter="mobile-nav-enter",
-            x_transition_leave="mobile-nav-leave",
-            x_on_click_away="mobileMenuOpen = false"
+            x_transition=True,
+            **{"@click.away": "mobileMenuOpen = false"}
         ),
 
         cls="navbar",
         x_data="{ mobileMenuOpen: false }",
-        x_bind_class="{ 'nav-scrolled': scrolled }",
+        **kwargs
+    )
+
+
+# ============================================================================
+# CLOUD PAGE LAYOUT
+# ============================================================================
+
+def CloudPageLayout(*content, title: str = "Komercia Cloud", description: str = None, **kwargs):
+    """
+    Layout para la página de Komercia Cloud con estilos específicos
+    """
+    meta_description = description or "Komercia Cloud - Gestiona tu minimarket desde cualquier lugar. Software en la nube para ventas, inventario y reportes."
+
+    return Html(
+        Head(
+            # Meta básicos
+            Title(title),
+            Meta(charset="utf-8"),
+            Meta(name="viewport", content="width=device-width, initial-scale=1"),
+            Meta(name="description", content=meta_description),
+
+            # SEO
+            Meta(name="robots", content="index, follow"),
+            Meta(name="author", content="Komercia"),
+            Meta(name="keywords", content="SaaS, software nube, minimarket, gestión, inventario, ventas, reportes, Chile"),
+
+            # Open Graph
+            Meta(property="og:title", content=title),
+            Meta(property="og:description", content=meta_description),
+            Meta(property="og:type", content="website"),
+            Meta(property="og:locale", content="es_CL"),
+
+            # Fonts - Plus Jakarta Sans y DM Sans
+            Link(rel="preconnect", href="https://fonts.googleapis.com"),
+            Link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin=True),
+            Link(
+                rel="stylesheet",
+                href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap"
+            ),
+
+            # Styles - Base + Cloud específicos
+            Link(rel="stylesheet", href="/static/css/styles.css"),
+            Link(rel="stylesheet", href="/static/css/cloud-styles.css"),
+
+            # Alpine.js
+            Script(src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js", defer=True),
+
+            # Favicon
+            Link(rel="icon", href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☁️</text></svg>"),
+        ),
+        Body(
+            # Scroll tracking
+            Div(
+                CloudNavbar(),
+                Main(*content, cls="main-content"),
+                Footer(),
+                cls="page-wrapper",
+                x_data="{ scrolled: false }",
+                x_init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 50 })"
+            ),
+            # Chat widget placeholder
+            Div(
+                Button_(
+                    I(cls="icon icon-message-circle"),
+                    cls="chat-widget-btn",
+                    aria_label="Abrir chat"
+                ),
+                cls="chat-widget"
+            )
+        ),
+        lang="es"
+    )
+
+
+def CloudNavbar(**kwargs):
+    """
+    Barra de navegación para la página Cloud
+    """
+    nav_links = [
+        {"text": "Beneficios", "href": "#beneficios"},
+        {"text": "Precios", "href": "#precios"},
+        {"text": "FAQ", "href": "#faq"},
+    ]
+
+    # Links de navegación
+    nav_items = [
+        A(link["text"], href=link["href"], cls="nav-link")
+        for link in nav_links
+    ]
+
+    return Nav(
+        Div(
+            # Logo
+            A(Logo(), href="/", cls="nav-logo-link"),
+
+            # Nav links (desktop)
+            Div(*nav_items, cls="nav-links"),
+
+            # CTA buttons (desktop)
+            Div(
+                A("Ver POS", href="/pos", cls="nav-login"),
+                Button("Probar gratis", variant="primary", size="sm", href="/#contacto"),
+                cls="nav-cta"
+            ),
+
+            # Mobile menu button
+            Button_(
+                Span(cls="hamburger-line"),
+                Span(cls="hamburger-line"),
+                Span(cls="hamburger-line"),
+                cls="nav-hamburger",
+                aria_label="Menú",
+                **{"@click": "mobileMenuOpen = !mobileMenuOpen"}
+            ),
+
+            cls="nav-container container"
+        ),
+
+        # Mobile menu
+        Div(
+            Div(
+                *[A(link["text"], href=link["href"], cls="mobile-nav-link", **{"@click": "mobileMenuOpen = false"}) for link in nav_links],
+                Hr(cls="mobile-nav-divider"),
+                A("Ver POS", href="/pos", cls="mobile-nav-link"),
+                Button("Probar gratis", variant="primary", full_width=True, href="/#contacto"),
+                cls="mobile-nav-content"
+            ),
+            cls="mobile-nav",
+            x_show="mobileMenuOpen",
+            x_transition=True,
+            **{"@click.away": "mobileMenuOpen = false"}
+        ),
+
+        cls="navbar",
+        x_data="{ mobileMenuOpen: false }",
         **kwargs
     )
 
