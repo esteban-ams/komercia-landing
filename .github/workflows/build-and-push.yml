@@ -66,6 +66,16 @@ jobs:
           cache-to: type=gha,mode=max
           platforms: linux/amd64
 
+      - name: Deploy to production
+        if: github.ref == 'refs/heads/main'
+        run: |
+          curl -sS -X POST https://deploy.esteban-ams.cl/api/deploy/komercia-landing \
+            -H "X-FastShip-Secret: ${{ secrets.FASTSHIP_SECRET }}" \
+            -H "Content-Type: application/json" \
+            -d '{"image": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"}' \
+            --fail --show-error
+        continue-on-error: false
+
       - name: Summary
         run: |
           echo "## 🚀 Image Published" >> $GITHUB_STEP_SUMMARY
