@@ -1,0 +1,2311 @@
+<!DOCTYPE html>
+<html lang="es" x-data="{ mobileMenuOpen: false, activePackage: 'pro' }">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Komercia POS — El punto de venta completo para tu minimarket</title>
+  <meta name="description" content="Terminal POS + software en la nube para minimarkets chilenos. Hardware de calidad, instalación en 24h, capacitación incluida." />
+
+  <!-- Lexend — mismo que landing principal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Alpine.js -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <style>
+    /* =========================================================
+       DESIGN TOKENS — idénticos al landing principal
+       ========================================================= */
+    :root {
+      --color-bg:             #fafaf8;
+      --color-bg-warm:        #f5f2ec;
+      --color-bg-section:     #f0ece3;
+      --color-surface:        #ffffff;
+      --color-surface-amber:  #fffbeb;
+      --color-surface-purple: #f5f3ff;
+
+      --color-purple:         #7c3aed;
+      --color-purple-dark:    #5b21b6;
+      --color-purple-light:   #ede9fe;
+      --color-amber:          #f59e0b;
+      --color-amber-dark:     #d97706;
+      --color-amber-light:    #fef3c7;
+      --color-green:          #10b981;
+      --color-green-light:    #d1fae5;
+
+      --color-text:           #1c1917;
+      --color-text-secondary: #57534e;
+      --color-text-muted:     #a8a29e;
+      --color-text-on-dark:   #fafaf8;
+
+      --color-border:         #e7e2d8;
+      --color-border-strong:  #d6cfbf;
+
+      --shadow-sm:   0 1px 3px rgba(28, 25, 23, 0.08), 0 1px 2px rgba(28, 25, 23, 0.06);
+      --shadow-md:   0 4px 12px rgba(28, 25, 23, 0.10), 0 2px 6px rgba(28, 25, 23, 0.06);
+      --shadow-lg:   0 10px 30px rgba(28, 25, 23, 0.12), 0 4px 10px rgba(28, 25, 23, 0.08);
+      --shadow-xl:   0 20px 50px rgba(28, 25, 23, 0.14), 0 8px 20px rgba(28, 25, 23, 0.08);
+      --shadow-purple: 0 8px 24px rgba(124, 58, 237, 0.28);
+      --shadow-amber:  0 8px 24px rgba(245, 158, 11, 0.24);
+
+      --font-sans: 'Lexend', sans-serif;
+
+      --space-xs:  0.5rem;
+      --space-sm:  1rem;
+      --space-md:  1.5rem;
+      --space-lg:  2.5rem;
+      --space-xl:  4rem;
+      --space-2xl: 6rem;
+
+      --radius-sm:  6px;
+      --radius-md:  12px;
+      --radius-lg:  20px;
+      --radius-xl:  32px;
+      --radius-full: 9999px;
+    }
+
+    /* =========================================================
+       RESET & BASE
+       ========================================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin-inline: auto;
+      padding-inline: 1.25rem;
+    }
+
+    /* =========================================================
+       ANIMATIONS
+       ========================================================= */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatGently {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      33%       { transform: translateY(-8px) rotate(1deg); }
+      66%       { transform: translateY(-4px) rotate(-0.5deg); }
+    }
+
+    @keyframes scanline {
+      0%   { transform: translateY(-100%); }
+      100% { transform: translateY(400%); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    /* Scroll-triggered reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* =========================================================
+       NAVBAR — idéntico al landing
+       ========================================================= */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 250, 248, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .navbar__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 4rem;
+      gap: 1rem;
+    }
+
+    .navbar__logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--color-text);
+      letter-spacing: -0.02em;
+    }
+
+    .navbar__logo-icon {
+      width: 2rem;
+      height: 2rem;
+      background: linear-gradient(135deg, var(--color-amber) 0%, #e07f00 100%);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-amber);
+    }
+
+    .navbar__logo-text span { color: var(--color-purple); }
+
+    .navbar__nav {
+      display: none;
+      gap: 1.75rem;
+      align-items: center;
+    }
+
+    .navbar__nav a {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      transition: color 0.2s;
+    }
+    .navbar__nav a:hover { color: var(--color-text); }
+    .navbar__nav a.active { color: var(--color-purple); font-weight: 600; }
+
+    .navbar__cta {
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-hamburger {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.375rem;
+      color: var(--color-text);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 2rem;
+    }
+
+    .btn-hamburger span {
+      display: block;
+      height: 2px;
+      background: currentColor;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .btn-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .btn-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .btn-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      padding: 1rem 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .mobile-menu a {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--color-border);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:last-of-type { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--color-purple); }
+
+    /* =========================================================
+       BUTTONS
+       ========================================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-full);
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      white-space: nowrap;
+      line-height: 1.2;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--color-text-secondary);
+      border: 1.5px solid var(--color-border-strong);
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.18s, color 0.18s, border-color 0.18s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-ghost:hover {
+      background: var(--color-bg-section);
+      color: var(--color-text);
+      border-color: var(--color-purple);
+    }
+
+    .btn-primary {
+      background: var(--color-purple);
+      color: white;
+      box-shadow: var(--shadow-purple);
+    }
+    .btn-primary:hover {
+      background: var(--color-purple-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(124, 58, 237, 0.36);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--color-text);
+      border: 2px solid var(--color-border-strong);
+    }
+    .btn-secondary:hover {
+      border-color: var(--color-purple);
+      color: var(--color-purple);
+      background: var(--color-purple-light);
+    }
+
+    .btn-amber {
+      background: var(--color-amber);
+      color: #1c1917;
+      box-shadow: var(--shadow-amber);
+      font-weight: 700;
+    }
+    .btn-amber:hover {
+      background: var(--color-amber-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: white;
+      font-weight: 700;
+      font-size: 1.0625rem;
+    }
+    .btn-whatsapp:hover { background: #1daa50; transform: translateY(-2px); }
+
+    .btn-lg { padding: 0.9375rem 2rem; font-size: 1.0625rem; }
+    .btn-sm { padding: 0.5rem 1.125rem; font-size: 0.875rem; }
+    .btn-full { width: 100%; }
+
+    /* =========================================================
+       HERO — POS specific
+       Hero uses a darker purple tone for a more "tech" feel,
+       while staying in the same warm palette family.
+       ========================================================= */
+    .hero-pos {
+      position: relative;
+      overflow: hidden;
+      padding-top: var(--space-xl);
+      padding-bottom: 5rem;
+      background: var(--color-bg);
+    }
+
+    /* Background: darker purple glow center + warm amber corners */
+    .hero-pos::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 0%, rgba(124, 58, 237, 0.10) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 10% 80%, rgba(245, 158, 11, 0.09) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 50% at 90% 50%, rgba(91, 33, 182, 0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-pos__deco {
+      position: absolute;
+      pointer-events: none;
+    }
+    .hero-pos__deco-1 {
+      top: 3rem;
+      right: 6%;
+      width: 4rem;
+      height: 4rem;
+      border: 2px dashed rgba(124, 58, 237, 0.2);
+      border-radius: 50%;
+      animation: floatGently 7s ease-in-out infinite;
+    }
+    .hero-pos__deco-2 {
+      bottom: 5rem;
+      left: 4%;
+      width: 3rem;
+      height: 3rem;
+      background: rgba(245, 158, 11, 0.08);
+      border-radius: 50%;
+      animation: floatGently 9s ease-in-out infinite 3s;
+    }
+    .hero-pos__deco-3 {
+      top: 35%;
+      right: 3%;
+      width: 1.25rem;
+      height: 1.25rem;
+      background: var(--color-purple-light);
+      border-radius: 3px;
+      animation: floatGently 6s ease-in-out infinite 1.5s;
+    }
+
+    .hero-pos__inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 2rem;
+    }
+
+    .hero-pos__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--color-purple-light);
+      border: 1px solid rgba(124, 58, 237, 0.25);
+      color: var(--color-purple);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      padding: 0.375rem 0.875rem;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.02em;
+      animation: fadeInUp 0.6s ease-out 0.1s both;
+    }
+
+    .hero-pos__headline {
+      font-size: clamp(2.25rem, 7vw, 4rem);
+      font-weight: 900;
+      line-height: 1.07;
+      letter-spacing: -0.03em;
+      color: var(--color-text);
+      max-width: 18ch;
+      animation: fadeInUp 0.7s ease-out 0.2s both;
+    }
+
+    .hero-pos__headline-accent {
+      color: var(--color-purple);
+      position: relative;
+    }
+
+    .hero-pos__headline-accent::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--color-amber);
+      border-radius: var(--radius-full);
+      opacity: 0.7;
+    }
+
+    .hero-pos__subheadline {
+      font-size: clamp(1rem, 2.5vw, 1.1875rem);
+      font-weight: 400;
+      color: var(--color-text-secondary);
+      max-width: 50ch;
+      line-height: 1.65;
+      animation: fadeInUp 0.7s ease-out 0.3s both;
+    }
+
+    .hero-pos__badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.625rem;
+      justify-content: center;
+      animation: fadeInUp 0.7s ease-out 0.4s both;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: 0.3125rem 0.875rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-badge__dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background: var(--color-green);
+    }
+
+    .hero-pos__actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+      width: 100%;
+      max-width: 24rem;
+      animation: fadeInUp 0.7s ease-out 0.5s both;
+    }
+
+    /* =========================================================
+       POS TERMINAL MOCKUP — CSS only visual
+       ========================================================= */
+    .pos-visual {
+      width: 100%;
+      max-width: 30rem;
+      animation: fadeInUp 0.8s ease-out 0.45s both;
+    }
+
+    /* The terminal bezel */
+    .pos-terminal {
+      background: linear-gradient(160deg, #2d2040 0%, #1a1230 100%);
+      border-radius: 16px;
+      padding: 1rem;
+      box-shadow:
+        0 0 0 1px rgba(124, 58, 237, 0.3),
+        0 30px 60px rgba(28, 18, 48, 0.5),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle scanline animation */
+    .pos-terminal::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.6), transparent);
+      animation: scanline 4s linear infinite;
+      pointer-events: none;
+    }
+
+    /* Screen bezel */
+    .pos-screen {
+      background: #0f0b1e;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(124, 58, 237, 0.2);
+    }
+
+    /* Screen top bar — like a receipt printer status */
+    .pos-screen__topbar {
+      background: linear-gradient(90deg, #1a0f30 0%, #2a1550 100%);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(124, 58, 237, 0.15);
+    }
+
+    .pos-screen__title {
+      font-size: 0.625rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .pos-screen__status {
+      font-size: 0.625rem;
+      font-weight: 700;
+      color: #10b981;
+      letter-spacing: 0.06em;
+    }
+
+    /* Main POS content area */
+    .pos-content {
+      padding: 10px 12px;
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Left: cart items */
+    .pos-cart {
+      flex: 1;
+    }
+
+    .pos-cart__header {
+      font-size: 0.55rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .pos-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 7px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 5px;
+      margin-bottom: 4px;
+      border: 1px solid rgba(124, 58, 237, 0.1);
+    }
+
+    .pos-item__icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .pos-item__name {
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.75);
+      font-weight: 500;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pos-item__qty {
+      font-size: 0.55rem;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .pos-item__price {
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: #a78bfa;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Barcode scan row */
+    .pos-scan-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 8px;
+      padding: 5px 7px;
+      background: rgba(124, 58, 237, 0.08);
+      border: 1px dashed rgba(124, 58, 237, 0.3);
+      border-radius: 5px;
+    }
+
+    .pos-scan-row__text {
+      font-size: 0.55rem;
+      color: rgba(255,255,255,0.4);
+      flex: 1;
+    }
+
+    .pos-cursor {
+      width: 6px;
+      height: 10px;
+      background: #7c3aed;
+      border-radius: 1px;
+      animation: blink 1s ease-in-out infinite;
+    }
+
+    /* Right: total panel */
+    .pos-total {
+      width: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .pos-total__box {
+      background: rgba(124, 58, 237, 0.12);
+      border: 1px solid rgba(124, 58, 237, 0.25);
+      border-radius: 8px;
+      padding: 8px 6px;
+      text-align: center;
+    }
+
+    .pos-total__label {
+      font-size: 0.5rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 2px;
+    }
+
+    .pos-total__amount {
+      font-size: 0.875rem;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .pos-total__items {
+      font-size: 0.5rem;
+      color: rgba(255,255,255,0.35);
+      margin-top: 2px;
+    }
+
+    /* Payment buttons */
+    .pos-pay-btn {
+      border-radius: 6px;
+      padding: 5px 4px;
+      text-align: center;
+      font-size: 0.55rem;
+      font-weight: 700;
+      cursor: default;
+    }
+
+    .pos-pay-btn--cash {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #10b981;
+    }
+
+    .pos-pay-btn--card {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      color: #f59e0b;
+    }
+
+    .pos-pay-btn--credit {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+
+    /* Bottom receipt strip */
+    .pos-receipt-strip {
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pos-receipt-strip__text {
+      font-size: 0.5rem;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.06em;
+    }
+
+    .pos-receipt-strip__boleta {
+      font-size: 0.5rem;
+      color: #10b981;
+      font-weight: 700;
+    }
+
+    /* Hardware base */
+    .pos-base {
+      display: flex;
+      justify-content: center;
+      margin-top: 6px;
+    }
+
+    .pos-base__stand {
+      width: 60px;
+      height: 6px;
+      background: linear-gradient(to bottom, #3a2860, #251840);
+      border-radius: 0 0 4px 4px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    }
+
+    /* Printer beneath screen */
+    .pos-printer {
+      background: linear-gradient(to bottom, #1e1535, #151025);
+      border-radius: 6px;
+      margin-top: 6px;
+      padding: 5px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .pos-printer__slot {
+      width: 60%;
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 1px;
+    }
+
+    .pos-printer__led {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 6px #10b981;
+    }
+
+    /* =========================================================
+       SECTION COMMON STYLES
+       ========================================================= */
+    .section {
+      padding-block: var(--space-2xl);
+    }
+
+    .section--warm { background: var(--color-bg-warm); }
+    .section--ocher { background: var(--color-bg-section); }
+    .section--dark {
+      background: linear-gradient(160deg, #1a1230 0%, #2d1f48 100%);
+      color: var(--color-text-on-dark);
+    }
+
+    .section__header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .section__eyebrow {
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--color-purple);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+    }
+
+    .section--dark .section__eyebrow { color: var(--color-amber); }
+
+    .section__title {
+      font-size: clamp(1.75rem, 5vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      color: var(--color-text);
+    }
+
+    .section--dark .section__title { color: white; }
+
+    .section__subtitle {
+      font-size: 1.0625rem;
+      color: var(--color-text-secondary);
+      margin-top: 0.75rem;
+      max-width: 52ch;
+      margin-inline: auto;
+      line-height: 1.6;
+    }
+
+    .section--dark .section__subtitle { color: rgba(255,255,255,0.65); }
+
+    /* =========================================================
+       SYNC SECTION — Local POS ↔ Cloud
+       ========================================================= */
+    .sync-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .sync-pair {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .sync-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      text-align: center;
+      width: 100%;
+      max-width: 22rem;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .sync-card:hover {
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(124, 58, 237, 0.4);
+    }
+
+    .sync-card__icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-inline: auto;
+      margin-bottom: 1rem;
+    }
+
+    .sync-card__icon--purple { background: rgba(124, 58, 237, 0.2); }
+    .sync-card__icon--amber  { background: rgba(245, 158, 11, 0.2); }
+
+    .sync-card__title {
+      font-size: 1.125rem;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 0.375rem;
+      letter-spacing: -0.02em;
+    }
+
+    .sync-card__text {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.55;
+    }
+
+    .sync-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .sync-arrow__line {
+      width: 3rem;
+      height: 1px;
+      background: linear-gradient(to right, rgba(124, 58, 237, 0.4), rgba(245, 158, 11, 0.4));
+    }
+
+    .sync-benefits {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .sync-benefit {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+
+    .sync-benefit__icon {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+    }
+
+    .sync-benefit__title {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 0.25rem;
+    }
+
+    .sync-benefit__text {
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+
+    /* =========================================================
+       PACKAGES SECTION
+       ========================================================= */
+    .packages-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .package-card {
+      background: var(--color-surface);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 2rem 1.75rem 2.25rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .package-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Top accent bar */
+    .package-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .package-card--starter::before { background: linear-gradient(90deg, var(--color-amber-light), var(--color-amber)); }
+    .package-card--pro::before     { background: linear-gradient(90deg, var(--color-purple), var(--color-amber)); }
+    .package-card--enterprise::before { background: linear-gradient(90deg, var(--color-purple-dark), var(--color-purple)); }
+
+    /* Pro card: highlighted */
+    .package-card--pro {
+      border-color: var(--color-purple);
+      box-shadow: var(--shadow-purple), var(--shadow-lg);
+    }
+
+    .package-popular {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: var(--color-purple);
+      color: white;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      padding: 0.2rem 0.625rem;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.04em;
+    }
+
+    .package-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--color-text);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.375rem;
+    }
+
+    .package-tagline {
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 1.25rem;
+    }
+
+    .package-price {
+      display: flex;
+      align-items: baseline;
+      gap: 0.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .package-price__currency {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--color-text-secondary);
+      align-self: flex-start;
+      padding-top: 0.25rem;
+    }
+
+    .package-price__amount {
+      font-size: 2.5rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--color-text);
+      line-height: 1;
+    }
+
+    .package-price__note {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      align-self: flex-end;
+      padding-bottom: 0.125rem;
+    }
+
+    .package-vat {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .package-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin-bottom: 1.25rem;
+    }
+
+    .package-includes {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .package-includes li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--color-text-secondary);
+    }
+
+    .pkg-check {
+      width: 1.125rem;
+      height: 1.125rem;
+      background: var(--color-green-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-green);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* =========================================================
+       WHAT'S INCLUDED — 8-item grid
+       ========================================================= */
+    .includes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .include-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.875rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 1.125rem;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .include-item:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--color-purple-light);
+    }
+
+    .include-item__icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .include-item__title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.125rem;
+      letter-spacing: -0.01em;
+    }
+
+    .include-item__text {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      line-height: 1.4;
+    }
+
+    /* =========================================================
+       SOFTWARE FEATURES — 6 cards
+       ========================================================= */
+    .software-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .sw-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.25s;
+    }
+
+    .sw-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--color-purple-light);
+    }
+
+    .sw-card__icon {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.875rem;
+    }
+
+    .sw-card__title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    .sw-card__text {
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      line-height: 1.55;
+    }
+
+    /* =========================================================
+       INDIVIDUAL PRODUCTS — pill grid
+       ========================================================= */
+    .products-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .product-pill {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: 0.625rem 1.125rem;
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+
+    .product-pill:hover {
+      border-color: var(--color-purple);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .product-pill__name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .product-pill__price {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--color-purple);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .product-pill__sep {
+      width: 1px;
+      height: 0.875rem;
+      background: var(--color-border-strong);
+    }
+
+    /* =========================================================
+       SUPPORT SECTION
+       ========================================================= */
+    .support-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .support-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      transition: all 0.25s;
+    }
+
+    .support-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .support-card__icon {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .support-card__title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.25rem;
+    }
+
+    .support-card__text {
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      line-height: 1.55;
+    }
+
+    /* =========================================================
+       FINAL CTA SECTION
+       ========================================================= */
+    .cta-section {
+      padding-block: var(--space-2xl);
+      background: var(--color-bg-warm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--color-amber) 30%, var(--color-purple) 70%, transparent);
+    }
+
+    .cta-inner {
+      text-align: center;
+      max-width: 44rem;
+      margin-inline: auto;
+    }
+
+    .cta-inner__title {
+      font-size: clamp(1.875rem, 5vw, 2.75rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--color-text);
+      margin-bottom: 1rem;
+    }
+
+    .cta-inner__subtitle {
+      font-size: 1.0625rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .cta-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+    .footer {
+      background: var(--color-text);
+      color: rgba(255,255,255,0.75);
+      padding-block: 2rem;
+    }
+
+    .footer__inner {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+      text-align: center;
+    }
+
+    .footer__logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      font-size: 1.125rem;
+      color: white;
+    }
+
+    .footer__logo-icon {
+      width: 1.75rem;
+      height: 1.75rem;
+      background: linear-gradient(135deg, var(--color-amber) 0%, #e07f00 100%);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer__copy { font-size: 0.875rem; }
+
+    .footer__links { display: flex; gap: 1.5rem; }
+
+    .footer__links a {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: white; }
+
+    .footer__login {
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.4);
+      transition: color 0.2s;
+    }
+    .footer__login:hover { color: rgba(255,255,255,0.8); }
+
+    /* =========================================================
+       ICON BACKGROUNDS
+       ========================================================= */
+    .icon-bg-amber  { background: var(--color-amber-light); }
+    .icon-bg-purple { background: var(--color-purple-light); }
+    .icon-bg-green  { background: var(--color-green-light); }
+    .icon-bg-rose   { background: #ffe4e6; }
+    .icon-bg-blue   { background: #dbeafe; }
+    .icon-bg-teal   { background: #ccfbf1; }
+    .icon-bg-slate  { background: #f1f5f9; }
+    .icon-bg-orange { background: #ffedd5; }
+
+    /* =========================================================
+       RESPONSIVE — TABLET (640px+)
+       ========================================================= */
+    @media (min-width: 640px) {
+      .hero-pos__actions {
+        flex-direction: row;
+        max-width: none;
+        justify-content: center;
+      }
+
+      .packages-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .includes-grid {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
+
+      .software-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .support-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .cta-actions {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .sync-pair {
+        flex-direction: row;
+      }
+
+      .sync-arrow {
+        flex-direction: column;
+      }
+
+      .sync-arrow__line {
+        width: 1px;
+        height: 2rem;
+        background: linear-gradient(to bottom, rgba(124, 58, 237, 0.4), rgba(245, 158, 11, 0.4));
+      }
+    }
+
+    /* =========================================================
+       RESPONSIVE — DESKTOP (900px+)
+       ========================================================= */
+    @media (min-width: 900px) {
+      .navbar__nav  { display: flex; }
+      .navbar__cta  { display: flex; }
+      .btn-hamburger { display: none; }
+
+      .hero-pos {
+        padding-top: var(--space-2xl);
+        padding-bottom: 6rem;
+      }
+
+      .hero-pos__inner {
+        flex-direction: row;
+        text-align: left;
+        align-items: center;
+        gap: 3.5rem;
+      }
+
+      .hero-pos__content { flex: 1; }
+
+      .hero-pos__headline { max-width: 15ch; }
+
+      .hero-pos__eyebrow,
+      .hero-pos__badges { justify-content: flex-start; }
+
+      .hero-pos__subheadline { margin-inline: 0; }
+
+      .hero-pos__actions {
+        justify-content: flex-start;
+        flex-direction: row;
+      }
+
+      .pos-visual {
+        flex: 0 0 26rem;
+        max-width: 26rem;
+      }
+
+      .packages-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .software-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .support-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .sync-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+      }
+
+      .sync-pair { flex-direction: row; }
+
+      .sync-arrow { flex-direction: column; }
+      .sync-arrow__line {
+        width: 1px;
+        height: 2.5rem;
+        background: linear-gradient(to bottom, rgba(124, 58, 237, 0.4), rgba(245, 158, 11, 0.4));
+      }
+
+      .footer__inner {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+      }
+    }
+
+    /* =========================================================
+       PRINT
+       ========================================================= */
+    @media print {
+      .navbar, .hero-pos__deco, .btn-hamburger { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ============================================================
+       NAVBAR
+       ============================================================ -->
+  <header class="navbar" role="banner">
+    <div class="container">
+      <nav class="navbar__inner" aria-label="Navegación principal">
+        <a href="index.html" class="navbar__logo" aria-label="Komercia — Inicio">
+          <div class="navbar__logo-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1c1917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <span class="navbar__logo-text">Komer<span>cia</span></span>
+        </a>
+
+        <div class="navbar__nav" role="navigation">
+          <a href="index.html">Inicio</a>
+          <a href="#paquetes">Paquetes</a>
+          <a href="#software">Software</a>
+          <a href="#soporte">Soporte</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+
+        <div class="navbar__cta">
+          <a href="https://app.komercia.esteban-ams.cl/auth/login/" class="btn btn-ghost btn-sm">Iniciar sesión</a>
+          <a href="#contacto" class="btn btn-primary btn-sm">Solicitar cotización</a>
+        </div>
+
+        <button
+          class="btn-hamburger"
+          aria-label="Abrir menú"
+          :aria-expanded="mobileMenuOpen.toString()"
+          @click="mobileMenuOpen = !mobileMenuOpen"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="mobile-menu" x-show="mobileMenuOpen" x-transition @click="mobileMenuOpen = false">
+      <a href="index.html">Inicio</a>
+      <a href="#paquetes">Paquetes</a>
+      <a href="#software">Software</a>
+      <a href="#soporte">Soporte</a>
+      <a href="#contacto">Contacto</a>
+      <a href="#contacto" class="btn btn-primary btn-sm" style="margin-top: 0.5rem; text-align: center;">Solicitar cotización</a>
+    </div>
+  </header>
+
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero-pos" aria-labelledby="pos-headline">
+    <div class="hero-pos__deco hero-pos__deco-1" aria-hidden="true"></div>
+    <div class="hero-pos__deco hero-pos__deco-2" aria-hidden="true"></div>
+    <div class="hero-pos__deco hero-pos__deco-3" aria-hidden="true"></div>
+
+    <div class="container">
+      <div class="hero-pos__inner">
+        <div class="hero-pos__content">
+          <div class="hero-pos__eyebrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            Hardware + Software para minimarkets
+          </div>
+
+          <h1 class="hero-pos__headline" id="pos-headline">
+            El punto de venta <span class="hero-pos__headline-accent">completo</span> para tu minimarket
+          </h1>
+
+          <p class="hero-pos__subheadline">
+            Terminal POS de calidad industrial integrado con Komercia Cloud.
+            Instala hoy, vende mañana. Todo sincronizado en tiempo real.
+          </p>
+
+          <div class="hero-pos__badges">
+            <span class="hero-badge">
+              <span class="hero-badge__dot" aria-hidden="true"></span>
+              12 meses garantía
+            </span>
+            <span class="hero-badge">
+              <span class="hero-badge__dot" aria-hidden="true"></span>
+              Instalación en 24h
+            </span>
+            <span class="hero-badge">
+              <span class="hero-badge__dot" aria-hidden="true"></span>
+              Capacitación incluida
+            </span>
+          </div>
+
+          <div class="hero-pos__actions">
+            <a href="#paquetes" class="btn btn-primary btn-lg">Ver paquetes</a>
+            <a href="#contacto" class="btn btn-secondary btn-lg">Consultar precio →</a>
+          </div>
+        </div>
+
+        <!-- POS Terminal CSS mockup -->
+        <div class="pos-visual" aria-hidden="true">
+          <div class="pos-terminal" role="presentation">
+            <div class="pos-screen">
+              <!-- Top bar -->
+              <div class="pos-screen__topbar">
+                <span class="pos-screen__title">Komercia POS v4</span>
+                <span class="pos-screen__status">● EN LÍNEA</span>
+              </div>
+
+              <!-- Content: cart + total -->
+              <div class="pos-content">
+                <!-- Cart items -->
+                <div class="pos-cart">
+                  <div class="pos-cart__header">Venta actual</div>
+
+                  <div class="pos-item">
+                    <div class="pos-item__icon" style="background: rgba(59,130,246,0.15);">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                    </div>
+                    <span class="pos-item__name">Leche Soprole 1L</span>
+                    <span class="pos-item__qty">×2</span>
+                    <span class="pos-item__price">$2.580</span>
+                  </div>
+
+                  <div class="pos-item">
+                    <div class="pos-item__icon" style="background: rgba(245,158,11,0.15);">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    </div>
+                    <span class="pos-item__name">Pan Hallulla kg</span>
+                    <span class="pos-item__qty">×1</span>
+                    <span class="pos-item__price">$2.100</span>
+                  </div>
+
+                  <div class="pos-item">
+                    <div class="pos-item__icon" style="background: rgba(16,185,129,0.15);">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                    </div>
+                    <span class="pos-item__name">Coca-Cola 1.5L</span>
+                    <span class="pos-item__qty">×3</span>
+                    <span class="pos-item__price">$5.370</span>
+                  </div>
+
+                  <!-- Scan row -->
+                  <div class="pos-scan-row">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(124,58,237,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="3" y2="16"/><line x1="7" y1="6" x2="7" y2="18"/><line x1="11" y1="8" x2="11" y2="16"/><line x1="15" y1="6" x2="15" y2="18"/><line x1="19" y1="8" x2="19" y2="16"/><line x1="21" y1="8" x2="21" y2="16"/></svg>
+                    <span class="pos-scan-row__text">Escanear o buscar...</span>
+                    <span class="pos-cursor"></span>
+                  </div>
+                </div>
+
+                <!-- Total panel -->
+                <div class="pos-total">
+                  <div class="pos-total__box">
+                    <div class="pos-total__label">Total</div>
+                    <div class="pos-total__amount">$10.050</div>
+                    <div class="pos-total__items">3 productos</div>
+                  </div>
+
+                  <div class="pos-pay-btn pos-pay-btn--cash">
+                    <div>Efectivo</div>
+                  </div>
+                  <div class="pos-pay-btn pos-pay-btn--card">
+                    <div>Débito</div>
+                  </div>
+                  <div class="pos-pay-btn pos-pay-btn--credit">
+                    <div>Fiado</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Receipt strip -->
+              <div class="pos-receipt-strip">
+                <span class="pos-receipt-strip__text">CAJERO: CARMEN FUENTES</span>
+                <span class="pos-receipt-strip__boleta">BOLETA ELECTRÓNICA ✓</span>
+              </div>
+            </div>
+
+            <!-- Printer -->
+            <div class="pos-printer">
+              <div class="pos-printer__slot"></div>
+              <div class="pos-printer__led"></div>
+            </div>
+          </div>
+
+          <!-- Stand -->
+          <div class="pos-base">
+            <div class="pos-base__stand"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SINCRONÍA — Local ↔ Cloud
+       ============================================================ -->
+  <section class="section section--dark" aria-labelledby="sync-title">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__eyebrow">Diferenciador clave</span>
+        <h2 class="section__title" id="sync-title">Tu POS y la nube,<br>siempre conectados</h2>
+        <p class="section__subtitle">
+          Lo que pasa en caja se refleja al instante en Komercia Cloud.
+          Y al revés. Siempre sincronizados, sin intervención manual.
+        </p>
+      </div>
+
+      <div class="sync-grid">
+        <!-- Cards with arrow -->
+        <div class="sync-pair reveal reveal-delay-1">
+          <div class="sync-card">
+            <div class="sync-card__icon sync-card__icon--purple">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="sync-card__title">Komercia POS</div>
+            <div class="sync-card__text">Terminal local en tu minimarket. Funciona aunque se corte internet.</div>
+          </div>
+
+          <div class="sync-arrow" aria-hidden="true">
+            <div class="sync-arrow__line"></div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(167,139,250,0.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+            <div class="sync-arrow__line"></div>
+          </div>
+
+          <div class="sync-card">
+            <div class="sync-card__icon sync-card__icon--amber">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+            </div>
+            <div class="sync-card__title">Komercia Cloud</div>
+            <div class="sync-card__text">Accede desde cualquier dispositivo. Informes, stock y ventas en tiempo real.</div>
+          </div>
+        </div>
+
+        <!-- Benefits grid -->
+        <div class="sync-benefits reveal reveal-delay-2">
+          <div class="sync-benefit">
+            <div class="sync-benefit__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div class="sync-benefit__title">Instantáneo</div>
+            <div class="sync-benefit__text">Cada venta se sincroniza en milisegundos. Sin demoras ni filas de espera.</div>
+          </div>
+
+          <div class="sync-benefit">
+            <div class="sync-benefit__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="sync-benefit__title">Seguro</div>
+            <div class="sync-benefit__text">Respaldo automático en la nube. Tus datos nunca se pierden aunque falle el equipo.</div>
+          </div>
+
+          <div class="sync-benefit">
+            <div class="sync-benefit__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+            </div>
+            <div class="sync-benefit__title">Sin internet</div>
+            <div class="sync-benefit__text">El POS sigue vendiendo offline. Al volver la conexión, sincroniza solo.</div>
+          </div>
+
+          <div class="sync-benefit">
+            <div class="sync-benefit__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="sync-benefit__title">24/7</div>
+            <div class="sync-benefit__text">Revisa tu negocio a cualquier hora desde el teléfono. Sin límites de horario.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       PAQUETES DE HARDWARE
+       ============================================================ -->
+  <section class="section" id="paquetes" aria-labelledby="packages-title">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__eyebrow">Equipamiento completo</span>
+        <h2 class="section__title" id="packages-title">Elige tu paquete POS</h2>
+        <p class="section__subtitle">
+          Todo viene configurado y listo para funcionar. Solo conéctalo y empieza a vender.
+        </p>
+      </div>
+
+      <div class="packages-grid">
+        <!-- POS Starter -->
+        <div class="package-card package-card--starter reveal reveal-delay-1">
+          <div class="package-name">POS Starter</div>
+          <div class="package-tagline">Para comenzar con lo esencial</div>
+
+          <div class="package-price">
+            <span class="package-price__currency">$</span>
+            <span class="package-price__amount">349.990</span>
+          </div>
+          <div class="package-vat">Precio en pesos chilenos · IVA incluido</div>
+
+          <div class="package-divider"></div>
+
+          <ul class="package-includes">
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Terminal 15.6" táctil
+            </li>
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Impresora térmica 80mm
+            </li>
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Cajón portamonedas estándar
+            </li>
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Software Komercia POS instalado
+            </li>
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              1 mes Komercia Cloud incluido
+            </li>
+          </ul>
+
+          <a href="#contacto" class="btn btn-secondary btn-full">Solicitar cotización</a>
+        </div>
+
+        <!-- POS Pro — DESTACADO -->
+        <div class="package-card package-card--pro reveal reveal-delay-2">
+          <span class="package-popular">El más vendido</span>
+          <div class="package-name">POS Pro</div>
+          <div class="package-tagline">El más completo para el día a día</div>
+
+          <div class="package-price">
+            <span class="package-price__currency">$</span>
+            <span class="package-price__amount">549.990</span>
+          </div>
+          <div class="package-vat">Precio en pesos chilenos · IVA incluido</div>
+
+          <div class="package-divider"></div>
+
+          <ul class="package-includes">
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Terminal 15.6" Full HD táctil
+            </li>
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Impresora térmica 80mm
+            </li>
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Lector de códigos de barra USB
+            </li>
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Cajón portamonedas reforzado
+            </li>
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              3 meses Komercia Cloud incluido
+            </li>
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Capacitación presencial (2h)
+            </li>
+          </ul>
+
+          <a href="#contacto" class="btn btn-primary btn-full">Solicitar cotización</a>
+        </div>
+
+        <!-- POS Enterprise -->
+        <div class="package-card package-card--enterprise reveal reveal-delay-3">
+          <div class="package-name">POS Enterprise</div>
+          <div class="package-tagline">Para negocios exigentes con todo</div>
+
+          <div class="package-price">
+            <span class="package-price__currency">$</span>
+            <span class="package-price__amount">849.990</span>
+          </div>
+          <div class="package-vat">Precio en pesos chilenos · IVA incluido</div>
+
+          <div class="package-divider"></div>
+
+          <ul class="package-includes">
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Terminal 17" Full HD táctil
+            </li>
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Impresora térmica 80mm alta velocidad
+            </li>
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Lector inalámbrico de códigos
+            </li>
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Balanza electrónica integrada
+            </li>
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              6 meses Komercia Cloud incluido
+            </li>
+            <li>
+              <span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Soporte VIP por WhatsApp
+            </li>
+          </ul>
+
+          <a href="#contacto" class="btn btn-secondary btn-full" style="border-color: var(--color-purple-light);">Solicitar cotización</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       QUÉ INCLUYE — 8 items
+       ============================================================ -->
+  <section class="section section--warm" aria-labelledby="includes-title">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__eyebrow">Sin letra chica</span>
+        <h2 class="section__title" id="includes-title">Todo listo para funcionar</h2>
+        <p class="section__subtitle">
+          Cada paquete incluye hardware, software, instalación y capacitación. Sin costos ocultos.
+        </p>
+      </div>
+
+      <div class="includes-grid">
+        <div class="include-item reveal reveal-delay-1">
+          <div class="include-item__icon icon-bg-blue">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div>
+            <div class="include-item__title">Terminal táctil</div>
+            <div class="include-item__text">Pantalla HD resistente para uso intensivo</div>
+          </div>
+        </div>
+
+        <div class="include-item reveal reveal-delay-2">
+          <div class="include-item__icon icon-bg-amber">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-amber-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          </div>
+          <div>
+            <div class="include-item__title">Impresora</div>
+            <div class="include-item__text">Boletas y recibos térmicos de alta velocidad</div>
+          </div>
+        </div>
+
+        <div class="include-item reveal reveal-delay-3">
+          <div class="include-item__icon icon-bg-purple">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="3" y2="16"/><line x1="7" y1="6" x2="7" y2="18"/><line x1="11" y1="8" x2="11" y2="16"/><line x1="15" y1="6" x2="15" y2="18"/><line x1="19" y1="8" x2="19" y2="16"/></svg>
+          </div>
+          <div>
+            <div class="include-item__title">Lector de barras</div>
+            <div class="include-item__text">Escaneo rápido USB o inalámbrico</div>
+          </div>
+        </div>
+
+        <div class="include-item reveal reveal-delay-4">
+          <div class="include-item__icon icon-bg-green">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="22" height="13" rx="2"/><path d="M12 12v3"/><path d="M9 9v6"/><path d="M15 9v6"/><path d="M6 11v2"/><path d="M18 11v2"/></svg>
+          </div>
+          <div>
+            <div class="include-item__title">Cajón portamonedas</div>
+            <div class="include-item__text">Con apertura automática al finalizar venta</div>
+          </div>
+        </div>
+
+        <div class="include-item reveal reveal-delay-1">
+          <div class="include-item__icon icon-bg-rose">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div>
+            <div class="include-item__title">Software POS</div>
+            <div class="include-item__text">Komercia instalado y configurado</div>
+          </div>
+        </div>
+
+        <div class="include-item reveal reveal-delay-2">
+          <div class="include-item__icon icon-bg-teal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+          </div>
+          <div>
+            <div class="include-item__title">Komercia Cloud</div>
+            <div class="include-item__text">Acceso al panel web desde cualquier dispositivo</div>
+          </div>
+        </div>
+
+        <div class="include-item reveal reveal-delay-3">
+          <div class="include-item__icon icon-bg-orange">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <div>
+            <div class="include-item__title">Instalación</div>
+            <div class="include-item__text">Técnico a domicilio en menos de 24h</div>
+          </div>
+        </div>
+
+        <div class="include-item reveal reveal-delay-4">
+          <div class="include-item__icon icon-bg-slate">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <div class="include-item__title">Capacitación</div>
+            <div class="include-item__text">Entrenamiento para tu equipo al momento de instalar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       CARACTERÍSTICAS DEL SOFTWARE — 6 cards
+       ============================================================ -->
+  <section class="section section--ocher" id="software" aria-labelledby="software-title">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__eyebrow">Komercia POS Software</span>
+        <h2 class="section__title" id="software-title">Diseñado para minimarkets chilenos</h2>
+        <p class="section__subtitle">
+          No es un software genérico. Cada función existe porque un almacenero la necesita.
+        </p>
+      </div>
+
+      <div class="software-grid">
+        <div class="sw-card reveal reveal-delay-1">
+          <div class="sw-card__icon icon-bg-purple">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div class="sw-card__title">Ultra rápido</div>
+          <div class="sw-card__text">Cobra en segundos. Escanea, totaliza y emite boleta sin fricciones. Diseñado para hora pico.</div>
+        </div>
+
+        <div class="sw-card reveal reveal-delay-2">
+          <div class="sw-card__icon icon-bg-green">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          </div>
+          <div class="sw-card__title">Funciona offline</div>
+          <div class="sw-card__text">Si se corta internet no para el negocio. Sigue vendiendo y sincroniza cuando vuelve la señal.</div>
+        </div>
+
+        <div class="sw-card reveal reveal-delay-3">
+          <div class="sw-card__icon icon-bg-amber">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-amber-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div class="sw-card__title">Boleta electrónica</div>
+          <div class="sw-card__text">Emisión automática de boletas SII. Cumple con la ley tributaria chilena sin complicaciones.</div>
+        </div>
+
+        <div class="sw-card reveal reveal-delay-1">
+          <div class="sw-card__icon icon-bg-blue">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          </div>
+          <div class="sw-card__title">Control de stock</div>
+          <div class="sw-card__text">Cada venta descuenta automáticamente. Ver en tiempo real lo que queda en bodega.</div>
+        </div>
+
+        <div class="sw-card reveal reveal-delay-2">
+          <div class="sw-card__icon icon-bg-rose">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="sw-card__title">Multi-cajero</div>
+          <div class="sw-card__text">Varios usuarios con sus propias claves. Cada venta queda registrada con el nombre del cajero.</div>
+        </div>
+
+        <div class="sw-card reveal reveal-delay-3">
+          <div class="sw-card__icon icon-bg-teal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <div class="sw-card__title">Múltiples pagos</div>
+          <div class="sw-card__text">Efectivo, débito, crédito, fiado. Incluso pagos mixtos. Todo en una sola pantalla.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       PRODUCTOS INDIVIDUALES
+       ============================================================ -->
+  <section class="section" aria-labelledby="products-title">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__eyebrow">Piezas sueltas</span>
+        <h2 class="section__title" id="products-title">¿Necesitas algo específico?</h2>
+        <p class="section__subtitle">
+          Si ya tienes parte del equipo, podemos completarlo. Precios por pieza sin compromiso.
+        </p>
+      </div>
+
+      <div class="products-pills reveal">
+        <div class="product-pill">
+          <span class="product-pill__name">Terminal 15.6"</span>
+          <div class="product-pill__sep"></div>
+          <span class="product-pill__price">$189.990</span>
+        </div>
+        <div class="product-pill">
+          <span class="product-pill__name">Terminal 17"</span>
+          <div class="product-pill__sep"></div>
+          <span class="product-pill__price">$249.990</span>
+        </div>
+        <div class="product-pill">
+          <span class="product-pill__name">Impresora térmica</span>
+          <div class="product-pill__sep"></div>
+          <span class="product-pill__price">$79.990</span>
+        </div>
+        <div class="product-pill">
+          <span class="product-pill__name">Lector barras USB</span>
+          <div class="product-pill__sep"></div>
+          <span class="product-pill__price">$29.990</span>
+        </div>
+        <div class="product-pill">
+          <span class="product-pill__name">Lector inalámbrico</span>
+          <div class="product-pill__sep"></div>
+          <span class="product-pill__price">$49.990</span>
+        </div>
+        <div class="product-pill">
+          <span class="product-pill__name">Cajón estándar</span>
+          <div class="product-pill__sep"></div>
+          <span class="product-pill__price">$39.990</span>
+        </div>
+        <div class="product-pill">
+          <span class="product-pill__name">Cajón reforzado</span>
+          <div class="product-pill__sep"></div>
+          <span class="product-pill__price">$59.990</span>
+        </div>
+        <div class="product-pill">
+          <span class="product-pill__name">Balanza electrónica</span>
+          <div class="product-pill__sep"></div>
+          <span class="product-pill__price">$89.990</span>
+        </div>
+      </div>
+
+      <p style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--color-text-muted);">
+        Todos los precios en pesos chilenos, IVA incluido. Cotiza tu combinación por WhatsApp.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SOPORTE
+       ============================================================ -->
+  <section class="section section--warm" id="soporte" aria-labelledby="soporte-title">
+    <div class="container">
+      <div class="section__header reveal">
+        <span class="section__eyebrow">Respaldo permanente</span>
+        <h2 class="section__title" id="soporte-title">Nunca vas a estar solo</h2>
+        <p class="section__subtitle">
+          Tu equipo tiene que seguir funcionando. Cuando algo falla, estamos ahí.
+        </p>
+      </div>
+
+      <div class="support-grid">
+        <div class="support-card reveal reveal-delay-1">
+          <div class="support-card__icon icon-bg-green">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div>
+            <div class="support-card__title">Soporte técnico directo</div>
+            <div class="support-card__text">Por WhatsApp o email. Respondemos en horas, no en días. En español, sin tecnicismos.</div>
+          </div>
+        </div>
+
+        <div class="support-card reveal reveal-delay-2">
+          <div class="support-card__icon icon-bg-purple">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div class="support-card__title">Garantía 12 meses</div>
+            <div class="support-card__text">Todo el hardware viene con un año de garantía. Si algo falla, lo reemplazamos sin costo.</div>
+          </div>
+        </div>
+
+        <div class="support-card reveal reveal-delay-3">
+          <div class="support-card__icon icon-bg-amber">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-amber-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <div>
+            <div class="support-card__title">Visitas técnicas</div>
+            <div class="support-card__text">Si el problema no se resuelve a distancia, mandamos un técnico a tu local. Sin cobro adicional el primer año.</div>
+          </div>
+        </div>
+
+        <div class="support-card reveal reveal-delay-4">
+          <div class="support-card__icon icon-bg-teal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          </div>
+          <div>
+            <div class="support-card__title">Actualizaciones gratis</div>
+            <div class="support-card__text">El software se actualiza automáticamente. Siempre tienes las últimas funciones sin pagar más.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       CTA FINAL
+       ============================================================ -->
+  <section class="cta-section" id="contacto" aria-labelledby="cta-title">
+    <div class="container">
+      <div class="cta-inner reveal">
+        <h2 class="cta-inner__title" id="cta-title">
+          ¿Listo para modernizar<br>tu punto de venta?
+        </h2>
+        <p class="cta-inner__subtitle">
+          Cuéntanos qué necesitas y te preparamos una cotización personalizada.
+          Sin compromiso, sin letra chica. Solo nosotros y tu negocio.
+        </p>
+
+        <div class="cta-actions">
+          <a
+            href="https://wa.me/56912345678?text=Hola%2C%20me%20interesa%20cotizar%20un%20equipo%20POS%20para%20mi%20minimarket"
+            class="btn btn-whatsapp btn-lg"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Solicitar cotización por WhatsApp
+          </a>
+          <a href="index.html#contacto" class="btn btn-secondary btn-lg">
+            Pedir demo del software →
+          </a>
+        </div>
+
+        <p style="margin-top: 1.5rem; font-size: 0.875rem; color: var(--color-text-muted);">
+          Respuesta en menos de 24h · Instalación en toda la Región de Valparaíso
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__inner">
+        <a href="index.html" class="footer__logo" aria-label="Komercia — Inicio">
+          <span class="footer__logo-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1c1917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </span>
+          Komercia
+        </a>
+
+        <span class="footer__copy">© 2026 Komercia. Hecho en Chile.</span>
+
+        <nav class="footer__links" aria-label="Links legales">
+          <a href="#">Términos</a>
+          <a href="#">Privacidad</a>
+          <a href="https://app.komercia.esteban-ams.cl/auth/login/" class="footer__login">Iniciar sesión</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ============================================================
+       JAVASCRIPT — Scroll reveal
+       ============================================================ -->
+  <script>
+    (function () {
+      'use strict';
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      document.querySelectorAll('.reveal').forEach(function (el) {
+        observer.observe(el);
+      });
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+        anchor.addEventListener('click', function (e) {
+          var target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
