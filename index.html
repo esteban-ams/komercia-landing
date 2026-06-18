@@ -6,57 +6,58 @@
   <title>Komercia — Controla tu minimarket. Sin complicaciones.</title>
   <meta name="description" content="Sistema para minimarkets y almacenes en Chile. Sabe qué tienes en bodega, qué vendiste hoy y qué necesitas reponer. Desde tu celular." />
 
-  <!-- Lexend — legible, warm, designed for reading speed -->
+  <!-- V2 Design System fonts: Fraunces (display) + Inter (body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <!-- Alpine.js for nav toggle and form state -->
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
   <style>
     /* =========================================================
-       DESIGN TOKENS — Warm mercado palette
+       DESIGN TOKENS — V2 terracota palette (alineado con redesign.css)
        ========================================================= */
     :root {
-      /* Core palette */
-      --color-bg:             #fafaf8;
-      --color-bg-warm:        #f5f2ec;
-      --color-bg-section:     #f0ece3;
-      --color-surface:        #ffffff;
+      /* Core palette — mapea a tokens V2 */
+      --color-bg:             #F8F8F6;   /* var(--bg) */
+      --color-bg-warm:        #F2F1ED;   /* var(--surface-2) */
+      --color-bg-section:     #E8E6E0;   /* var(--surface-3) */
+      --color-surface:        #FFFFFF;   /* var(--surface-1) */
       --color-surface-amber:  #fffbeb;
-      --color-surface-purple: #f5f3ff;
+      --color-surface-purple: rgba(184, 67, 42, 0.07); /* accent alpha tint */
 
-      /* Brand */
-      --color-purple:         #7c3aed;
-      --color-purple-dark:    #5b21b6;
-      --color-purple-light:   #ede9fe;
+      /* Brand — terracota V2 */
+      --color-purple:         #B8432A;   /* var(--accent) */
+      --color-purple-dark:    #8B2D1A;   /* var(--accent-dark) */
+      --color-purple-light:   rgba(184, 67, 42, 0.12); /* accent alpha */
       --color-amber:          #f59e0b;
       --color-amber-dark:     #d97706;
       --color-amber-light:    #fef3c7;
       --color-green:          #10b981;
       --color-green-light:    #d1fae5;
 
-      /* Text */
-      --color-text:           #1c1917;
-      --color-text-secondary: #57534e;
-      --color-text-muted:     #a8a29e;
-      --color-text-on-dark:   #fafaf8;
+      /* Text — var(--fg-*) */
+      --color-text:           #18181B;   /* var(--fg-1) */
+      --color-text-secondary: #5C5C66;   /* var(--fg-2) */
+      --color-text-muted:     #9A9A9F;   /* var(--fg-3) */
+      --color-text-on-dark:   #F8F8F6;
 
-      /* Borders */
-      --color-border:         #e7e2d8;
+      /* Borders — var(--border) */
+      --color-border:         #E4E3DE;
       --color-border-strong:  #d6cfbf;
 
       /* Shadows — warm-tinted */
-      --shadow-sm:   0 1px 3px rgba(28, 25, 23, 0.08), 0 1px 2px rgba(28, 25, 23, 0.06);
-      --shadow-md:   0 4px 12px rgba(28, 25, 23, 0.10), 0 2px 6px rgba(28, 25, 23, 0.06);
-      --shadow-lg:   0 10px 30px rgba(28, 25, 23, 0.12), 0 4px 10px rgba(28, 25, 23, 0.08);
-      --shadow-xl:   0 20px 50px rgba(28, 25, 23, 0.14), 0 8px 20px rgba(28, 25, 23, 0.08);
-      --shadow-purple: 0 8px 24px rgba(124, 58, 237, 0.28);
+      --shadow-sm:   0 1px 3px rgba(24, 24, 27, 0.08), 0 1px 2px rgba(24, 24, 27, 0.06);
+      --shadow-md:   0 4px 12px rgba(24, 24, 27, 0.10), 0 2px 6px rgba(24, 24, 27, 0.06);
+      --shadow-lg:   0 10px 30px rgba(24, 24, 27, 0.12), 0 4px 10px rgba(24, 24, 27, 0.08);
+      --shadow-xl:   0 20px 50px rgba(24, 24, 27, 0.14), 0 8px 20px rgba(24, 24, 27, 0.08);
+      --shadow-purple: 0 8px 24px rgba(184, 67, 42, 0.25); /* accent shadow */
       --shadow-amber:  0 8px 24px rgba(245, 158, 11, 0.24);
 
-      /* Typography */
-      --font-sans: 'Lexend', sans-serif;
+      /* Typography — V2 editorial */
+      --font-sans:    'Inter', system-ui, sans-serif;
+      --font-display: 'Fraunces', Georgia, serif;
 
       /* Spacing scale */
       --space-xs:  0.5rem;
@@ -103,6 +104,11 @@
     a {
       color: inherit;
       text-decoration: none;
+    }
+
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      letter-spacing: -0.02em;
     }
 
     /* =========================================================
@@ -155,25 +161,133 @@
     }
 
     @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.3); }
-      50%       { box-shadow: 0 0 0 12px rgba(124, 58, 237, 0); }
+      0%, 100% { box-shadow: 0 0 0 0 rgba(184, 67, 42, 0.3); }
+      50%       { box-shadow: 0 0 0 12px rgba(184, 67, 42, 0); }
     }
 
-    /* Scroll-triggered reveal */
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.92);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-32px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(32px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes btnShimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+
+    /* Scroll-triggered reveal — base */
     .reveal {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      transform: translateY(28px);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
-    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* Directional variants */
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-28px);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(28px);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-scale.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Exit animation when element leaves viewport */
+    .reveal.exit {
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.3s ease-in, transform 0.3s ease-in;
+    }
+
+    /* Stagger delays */
+    .reveal-delay-1 { transition-delay: 0.08s; }
+    .reveal-delay-2 { transition-delay: 0.16s; }
+    .reveal-delay-3 { transition-delay: 0.24s; }
+    .reveal-delay-4 { transition-delay: 0.32s; }
+    .reveal-delay-5 { transition-delay: 0.40s; }
+    .reveal-delay-6 { transition-delay: 0.48s; }
+
+    /* Btn primary shimmer on hover */
+    .btn-primary {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        105deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.25) 50%,
+        transparent 60%
+      );
+      background-size: 200% 100%;
+      background-position: -200% center;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover::after {
+      opacity: 1;
+      animation: btnShimmer 0.6s ease-out forwards;
+    }
 
     /* =========================================================
        NAVBAR
@@ -343,7 +457,7 @@
     .btn-primary:hover {
       background: var(--color-purple-dark);
       transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(124, 58, 237, 0.36);
+      box-shadow: 0 12px 32px rgba(184, 67, 42, 0.25);
     }
     .btn-primary:active { transform: translateY(0); }
 
@@ -411,7 +525,7 @@
       inset: 0;
       background:
         radial-gradient(ellipse 80% 60% at 50% -10%, rgba(245, 158, 11, 0.12) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 40% at 85% 60%, rgba(124, 58, 237, 0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 85% 60%, rgba(184, 67, 42, 0.07) 0%, transparent 60%),
         radial-gradient(ellipse 50% 50% at 15% 70%, rgba(16, 185, 129, 0.05) 0%, transparent 55%);
       pointer-events: none;
     }
@@ -446,7 +560,7 @@
       left: 5%;
       width: 3.5rem;
       height: 3.5rem;
-      background: rgba(124, 58, 237, 0.06);
+      background: rgba(184, 67, 42, 0.06);
       border-radius: 50%;
       animation: floatGently 8s ease-in-out infinite 2s;
     }
@@ -569,8 +683,13 @@
     .hero__visual {
       width: 100%;
       max-width: 32rem;
-      animation: fadeInUp 0.8s ease-out 0.5s both;
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
     }
+
+    /* KPI cards stagger inside hero */
+    .kpi-card:nth-child(1) { animation: fadeInUp 0.6s ease-out 0.7s both; }
+    .kpi-card:nth-child(2) { animation: fadeInUp 0.6s ease-out 0.85s both; }
+    .kpi-card:nth-child(3) { animation: fadeInUp 0.6s ease-out 1.0s both; }
 
     .store-illustration {
       position: relative;
@@ -749,6 +868,19 @@
       background: var(--color-bg-section);
     }
 
+    .section--dark {
+      background: #18181b;
+    }
+    .section--dark .section__eyebrow {
+      color: var(--color-amber);
+    }
+    .section--dark .section__title {
+      color: #ffffff;
+    }
+    .section--dark .section__subtitle {
+      color: rgba(255, 255, 255, 0.65);
+    }
+
     .section__header {
       text-align: center;
       margin-bottom: var(--space-xl);
@@ -804,10 +936,9 @@
 
     .pain-card {
       background: var(--color-surface);
-      border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
       padding: 1.75rem;
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-md);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
       position: relative;
       overflow: hidden;
@@ -826,8 +957,8 @@
     }
 
     .pain-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-lg);
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg), 0 0 0 0 transparent, 0 4px 20px rgba(245, 158, 11, 0.12);
     }
     .pain-card:hover::before { opacity: 1; }
 
@@ -850,62 +981,37 @@
       font-size: 0.9375rem;
       color: var(--color-text-secondary);
       line-height: 1.6;
+      margin-bottom: 1rem;
     }
 
-    /* =========================================================
-       HOW IT WORKS SECTION
-       ========================================================= */
-    .steps {
+    /* Step pill inside pain card */
+    .pain-card__step {
       display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      position: relative;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: auto;
+      padding-top: 0.875rem;
+      border-top: 1px solid var(--color-border);
     }
 
-    .step {
-      display: flex;
-      gap: 1.25rem;
-      align-items: flex-start;
-    }
-
-    .step__number {
+    .pain-card__step-num {
       flex-shrink: 0;
-      width: 3.5rem;
-      height: 3.5rem;
-      background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-purple-dark) 100%);
+      width: 1.5rem;
+      height: 1.5rem;
+      background: var(--color-purple);
       color: white;
-      border-radius: var(--radius-md);
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      box-shadow: var(--shadow-purple);
+      font-size: 0.75rem;
+      font-weight: 800;
     }
 
-    .step__body {}
-
-    .step__title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--color-text);
-      margin-bottom: 0.375rem;
-      letter-spacing: -0.02em;
-    }
-
-    .step__text {
-      font-size: 0.9375rem;
+    .pain-card__step-label {
+      font-size: 0.8125rem;
+      font-weight: 600;
       color: var(--color-text-secondary);
-      line-height: 1.6;
-    }
-
-    /* Connector line between steps */
-    .steps__connector {
-      width: 2px;
-      height: 2rem;
-      background: var(--color-border);
-      margin-left: calc(1.75rem - 1px);
     }
 
     /* =========================================================
@@ -919,20 +1025,27 @@
 
     .feature-card {
       background: var(--color-surface);
-      border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
       padding: 1.5rem;
       display: flex;
       gap: 1rem;
       align-items: flex-start;
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-md);
       transition: all 0.25s ease;
     }
 
     .feature-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-md);
-      border-color: var(--color-purple-light);
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .feature-card:hover .feature-card__icon-wrap {
+      transform: scale(1.08);
+      transition: transform 0.25s ease;
+    }
+
+    .feature-card__icon-wrap {
+      transition: transform 0.25s ease;
     }
 
     .feature-card__icon-wrap {
@@ -969,140 +1082,50 @@
     }
 
     /* =========================================================
-       UN DÍA CON KOMERCIA — Timeline section
+       PRICING SECTION
        ========================================================= */
-    .day-section {
-      padding-block: var(--space-2xl);
-      background: var(--color-bg-warm);
-      position: relative;
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      align-items: start;
     }
 
-    /* Subtle top border accent */
-    .day-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent 0%, var(--color-amber) 30%, var(--color-purple) 70%, transparent 100%);
-    }
-
-    .day-timeline {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      max-width: 52rem;
-      margin-inline: auto;
-    }
-
-    /* Vertical line on mobile */
-    .day-timeline::before {
-      content: '';
-      position: absolute;
-      left: 1.375rem;
-      top: 1.5rem;
-      bottom: 1.5rem;
-      width: 2px;
-      background: linear-gradient(to bottom, var(--color-amber-light), var(--color-purple-light), var(--color-amber-light));
-      z-index: 0;
-    }
-
-    .day-item {
-      display: flex;
-      gap: 1.25rem;
-      align-items: flex-start;
-      padding-bottom: 2rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .day-item:last-child {
-      padding-bottom: 0;
-    }
-
-    /* The dot on the timeline */
-    .day-item__dot {
-      flex-shrink: 0;
-      width: 2.75rem;
-      height: 2.75rem;
-      border-radius: 50%;
-      background: var(--color-surface);
-      border: 2px solid var(--color-purple-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-purple);
-      box-shadow: var(--shadow-sm);
-      transition: border-color 0.3s, background 0.3s;
-    }
-
-    .day-item:hover .day-item__dot {
-      background: var(--color-purple-light);
-      border-color: var(--color-purple);
-    }
-
-    .day-item__content {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem 1.5rem;
-      flex: 1;
-      box-shadow: var(--shadow-sm);
-      transition: box-shadow 0.25s, transform 0.25s;
-    }
-
-    .day-item:hover .day-item__content {
-      box-shadow: var(--shadow-md);
-      transform: translateX(4px);
-    }
-
-    .day-item__time {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--color-amber-dark);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      font-variant-numeric: tabular-nums;
-      margin-bottom: 0.25rem;
-    }
-
-    .day-item__title {
-      font-size: 1.0625rem;
-      font-weight: 700;
-      color: var(--color-text);
-      letter-spacing: -0.01em;
-      line-height: 1.3;
-      margin-bottom: 0.375rem;
-    }
-
-    .day-item__text {
-      font-size: 0.9375rem;
-      color: var(--color-text-secondary);
-      line-height: 1.6;
-    }
-
-    /* Desktop: wider layout, shift line to center-ish */
-    @media (min-width: 700px) {
-      .day-timeline::before {
-        left: 1.625rem;
+    @media (min-width: 900px) {
+      .pricing-grid {
+        grid-template-columns: repeat(3, 1fr);
+        align-items: stretch;
       }
     }
 
-    /* =========================================================
-       PRICING SECTION
-       ========================================================= */
     .pricing-card {
       background: var(--color-surface);
       border: 2px solid var(--color-border);
+      border-left: 4px solid var(--color-border);
       border-radius: var(--radius-xl);
       padding: 2rem 1.75rem 2.25rem;
-      max-width: 28rem;
-      margin-inline: auto;
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--shadow-md);
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-left-color 0.25s ease;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-xl);
+      border-left-color: var(--color-purple);
+    }
+
+    .pricing-card--featured {
+      border-color: var(--color-purple);
+      border-left-color: var(--color-purple);
+      box-shadow: 0 0 0 4px var(--color-purple-light), var(--shadow-lg);
+    }
+
+    .pricing-card--featured:hover {
+      box-shadow: 0 0 0 4px var(--color-purple-light), var(--shadow-xl);
     }
 
     /* Top accent stripe */
@@ -1113,6 +1136,10 @@
       left: 0;
       right: 0;
       height: 4px;
+      background: var(--color-border);
+    }
+
+    .pricing-card--featured::before {
       background: linear-gradient(90deg, var(--color-purple) 0%, var(--color-amber) 100%);
     }
 
@@ -1130,12 +1157,24 @@
       margin-bottom: 1.25rem;
     }
 
+    .pricing-badge-placeholder {
+      height: 1.625rem;
+      margin-bottom: 1.25rem;
+    }
+
     .pricing-name {
-      font-size: 1.375rem;
+      font-size: 1.25rem;
       font-weight: 800;
       color: var(--color-text);
       letter-spacing: -0.02em;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .pricing-tagline {
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+      margin-bottom: 1rem;
+      line-height: 1.4;
     }
 
     .pricing-price {
@@ -1146,7 +1185,7 @@
     }
 
     .pricing-price__amount {
-      font-size: 3rem;
+      font-size: 2.75rem;
       font-weight: 900;
       letter-spacing: -0.04em;
       color: var(--color-text);
@@ -1154,7 +1193,7 @@
     }
 
     .pricing-price__currency {
-      font-size: 1.25rem;
+      font-size: 1.125rem;
       font-weight: 700;
       color: var(--color-text-secondary);
       align-self: flex-start;
@@ -1170,35 +1209,42 @@
     .pricing-note {
       font-size: 0.8125rem;
       color: var(--color-text-muted);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
 
     .pricing-divider {
       height: 1px;
       background: var(--color-border);
-      margin-block: 1.5rem;
+      margin-block: 1.25rem;
     }
 
     .pricing-features {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
-      margin-bottom: 2rem;
+      gap: 0.625rem;
+      margin-bottom: 1.75rem;
+      flex: 1;
     }
 
     .pricing-features li {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 0.625rem;
-      font-size: 0.9375rem;
+      font-size: 0.875rem;
       color: var(--color-text-secondary);
       font-weight: 400;
+      line-height: 1.4;
+    }
+
+    .pricing-features li.pricing-item--off {
+      color: var(--color-text-muted);
     }
 
     .pricing-check {
-      width: 1.25rem;
-      height: 1.25rem;
+      width: 1.125rem;
+      height: 1.125rem;
+      min-width: 1.125rem;
       background: var(--color-green-light);
       border-radius: 50%;
       display: flex;
@@ -1206,6 +1252,21 @@
       justify-content: center;
       color: var(--color-green);
       flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .pricing-cross {
+      width: 1.125rem;
+      height: 1.125rem;
+      min-width: 1.125rem;
+      background: #f5f2ec;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-muted);
+      flex-shrink: 0;
+      margin-top: 0.1rem;
     }
 
     .pricing-no-tricks {
@@ -1213,6 +1274,561 @@
       font-size: 0.8125rem;
       color: var(--color-text-muted);
       margin-top: 1rem;
+    }
+
+    /* =========================================================
+       POS HARDWARE SECTION
+       ========================================================= */
+
+    /* navbar pos badge */
+    .navbar__link-pos { position: relative; }
+    .navbar__pos-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      background: var(--color-amber-light);
+      color: var(--color-amber-dark);
+      padding: 0.125rem 0.4rem;
+      border-radius: var(--radius-full);
+      margin-left: 0.3rem;
+      vertical-align: middle;
+      line-height: 1.4;
+    }
+
+    /* POS Hardware section separator */
+    .pos-section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--color-border-strong), transparent);
+      margin: 0;
+    }
+
+    /* POS LIGHT MOCKUP — tablet/monitor style, tema claro */
+    .pos-mockup-wrap {
+      width: 100%;
+      background: #f0ece3;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid var(--color-border);
+    }
+    /* Browser chrome bar */
+    .pos-mockup-chrome {
+      background: #e8e3da;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid #d6cfbf;
+    }
+    .pos-mockup-chrome__dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .pos-mockup-chrome__dot--red    { background: #f87171; }
+    .pos-mockup-chrome__dot--yellow { background: #fbbf24; }
+    .pos-mockup-chrome__dot--green  { background: #34d399; }
+    .pos-mockup-chrome__url {
+      flex: 1;
+      background: #fafaf8;
+      border-radius: 5px;
+      padding: 3px 8px;
+      font-size: 0.625rem;
+      color: #a8a29e;
+      font-family: monospace;
+      margin-left: 6px;
+    }
+    /* Inner POS body */
+    .pos-mockup-body {
+      background: #f5f5f5;
+      display: flex;
+      min-height: 0;
+    }
+    /* Left column */
+    .pos-col-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #e7e2d8;
+    }
+    /* Top header of left col */
+    .pos-topbar {
+      background: #fff;
+      border-bottom: 1px solid #e7e2d8;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .pos-topbar__title {
+      font-size: 0.625rem;
+      font-weight: 700;
+      color: #1c1917;
+    }
+    .pos-topbar__icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pos-topbar__icon-btn {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #f0ece3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Search bar */
+    .pos-search-row {
+      padding: 8px 10px;
+      display: flex;
+      gap: 5px;
+      border-bottom: 1px solid #e7e2d8;
+      background: #fafaf8;
+    }
+    .pos-search-input {
+      flex: 1;
+      background: #fff;
+      border: 1px solid #e7e2d8;
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 0.55rem;
+      color: #a8a29e;
+    }
+    .pos-search-btn {
+      background: #1c1917;
+      color: #fff;
+      border-radius: 5px;
+      padding: 3px 7px;
+      font-size: 0.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    /* Cart items */
+    .pos-cart-items {
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex: 1;
+    }
+    .pos-cart-item {
+      background: #fff;
+      border-radius: 6px;
+      border: 1px solid #e7e2d8;
+      padding: 6px 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pos-cart-item__num {
+      font-size: 0.5rem;
+      font-weight: 700;
+      color: #a8a29e;
+      min-width: 16px;
+    }
+    .pos-cart-item__name {
+      font-size: 0.575rem;
+      font-weight: 600;
+      color: #1c1917;
+      flex: 1;
+    }
+    .pos-cart-item__badge {
+      background: rgba(184, 67, 42, 0.12);
+      color: var(--color-purple);
+      font-size: 0.45rem;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    .pos-cart-item__qty-group {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .pos-cart-item__qty-btn {
+      width: 14px; height: 14px;
+      border-radius: 3px;
+      background: #f0ece3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.625rem;
+      font-weight: 700;
+      color: #57534e;
+    }
+    .pos-cart-item__qty-val {
+      font-size: 0.575rem;
+      font-weight: 700;
+      color: #1c1917;
+      min-width: 18px;
+      text-align: center;
+    }
+    .pos-cart-item__price {
+      font-size: 0.6rem;
+      font-weight: 800;
+      color: var(--color-amber-dark);
+      font-variant-numeric: tabular-nums;
+    }
+    /* Right column */
+    .pos-col-right {
+      width: 120px;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      padding: 10px 8px;
+      gap: 6px;
+    }
+    .pos-weight-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .pos-weight {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #1c1917;
+    }
+    .pos-weight__dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #ef4444;
+    }
+    .pos-fiados-badge {
+      background: #ef4444;
+      color: white;
+      font-size: 0.45rem;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: var(--radius-full);
+    }
+    .pos-sale-card {
+      background: #f8f8f6;
+      border: 1px solid #e7e2d8;
+      border-radius: 7px;
+      padding: 7px;
+    }
+    .pos-sale-card__title {
+      font-size: 0.6rem;
+      font-weight: 800;
+      color: #1c1917;
+    }
+    .pos-sale-card__sub {
+      font-size: 0.5rem;
+      color: #a8a29e;
+      margin-top: 1px;
+    }
+    .pos-breakdown {
+      padding-top: 6px;
+      border-top: 1px solid #e7e2d8;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .pos-breakdown__row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.5rem;
+      color: #a8a29e;
+    }
+    .pos-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 2px;
+    }
+    .pos-total-label {
+      font-size: 0.55rem;
+      font-weight: 700;
+      color: #1c1917;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .pos-total-amount {
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--color-amber-dark);
+      letter-spacing: -0.02em;
+    }
+    .pos-pay-action {
+      background: var(--color-amber);
+      color: #1c1917;
+      font-size: 0.575rem;
+      font-weight: 800;
+      border-radius: 20px;
+      padding: 6px 8px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      margin-top: 2px;
+    }
+    .pos-cancel-action {
+      border: 1px solid #e7e2d8;
+      color: #a8a29e;
+      font-size: 0.5rem;
+      font-weight: 600;
+      border-radius: 20px;
+      padding: 4px 8px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+    }
+    .pos-brand-badge {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.45rem;
+      color: #a8a29e;
+    }
+    .pos-brand-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--color-green);
+    }
+    /* Bottom nav */
+    .pos-bottom-nav {
+      background: #fff;
+      border-top: 1px solid #e7e2d8;
+      display: flex;
+      justify-content: space-around;
+      padding: 6px 0 5px;
+    }
+    .pos-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .pos-nav-item__icon {
+      width: 26px; height: 26px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pos-nav-item__icon--active { background: rgba(184, 67, 42, 0.10); }
+    .pos-nav-item__icon--sell {
+      background: var(--color-purple);
+      width: 30px; height: 30px;
+      border-radius: 9px;
+      margin-top: -6px;
+      box-shadow: 0 3px 8px rgba(184, 67, 42, 0.35);
+    }
+    .pos-nav-item__label {
+      font-size: 0.5rem;
+      font-weight: 600;
+    }
+    .pos-nav-item__label--active { color: var(--color-purple); font-weight: 700; }
+    .pos-nav-item__label--muted  { color: #a8a29e; }
+    .pos-nav-item__label--sell   { color: white; }
+
+    /* POS HERO */
+    .hero-pos {
+      padding-block: var(--space-2xl);
+      background: var(--color-bg);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-pos::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 0%, rgba(184, 67, 42, 0.06) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 50% at 90% 50%, rgba(245, 158, 11, 0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-pos__inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 2.5rem;
+    }
+    .hero-pos__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--color-purple-light);
+      border: 1px solid rgba(184, 67, 42, 0.2);
+      color: var(--color-purple);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      padding: 0.375rem 0.875rem;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.02em;
+    }
+    .hero-pos__headline {
+      font-size: clamp(2rem, 6vw, 3.25rem);
+      font-weight: 900;
+      line-height: 1.07;
+      letter-spacing: -0.03em;
+      color: var(--color-text);
+      max-width: 20ch;
+    }
+    .hero-pos__headline-accent {
+      color: var(--color-purple);
+      position: relative;
+    }
+    .hero-pos__headline-accent::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0; right: 0;
+      height: 3px;
+      background: var(--color-amber);
+      border-radius: var(--radius-full);
+      opacity: 0.7;
+    }
+    .hero-pos__subheadline {
+      font-size: clamp(1rem, 2.5vw, 1.125rem);
+      color: var(--color-text-secondary);
+      max-width: 50ch;
+      line-height: 1.65;
+    }
+    .hero-pos__badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.625rem;
+      justify-content: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: 0.3125rem 0.875rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      box-shadow: var(--shadow-sm);
+    }
+    .hero-badge__dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--color-green); }
+    .hero-pos__actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+      width: 100%;
+      max-width: 24rem;
+    }
+    .pos-visual { width: 100%; max-width: 28rem; }
+
+    /* SYNC SECTION */
+    .sync-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: center; }
+    .sync-pair { display: flex; flex-direction: column; gap: 1rem; align-items: center; }
+    .sync-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius-lg); padding: 1.5rem; text-align: center; width: 100%; max-width: 22rem; }
+    .sync-card__icon { width: 3rem; height: 3rem; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin-inline: auto; margin-bottom: 1rem; }
+    .sync-card__icon--purple { background: rgba(124,58,237,0.2); }
+    .sync-card__icon--amber  { background: rgba(245,158,11,0.2); }
+    .sync-card__title { font-size: 1.125rem; font-weight: 800; color: white; margin-bottom: 0.375rem; letter-spacing: -0.02em; }
+    .sync-card__text { font-size: 0.875rem; color: rgba(255,255,255,0.55); line-height: 1.55; }
+    .sync-arrow { display: flex; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.3); }
+    .sync-arrow__line { width: 3rem; height: 1px; background: linear-gradient(to right, rgba(124,58,237,0.4), rgba(245,158,11,0.4)); }
+    .sync-benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .sync-benefit { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-md); padding: 1.25rem; }
+    .sync-benefit__icon { margin-bottom: 0.5rem; display: flex; }
+    .sync-benefit__title { font-size: 0.9375rem; font-weight: 700; color: white; margin-bottom: 0.25rem; }
+    .sync-benefit__text { font-size: 0.8125rem; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+    /* PACKAGES */
+    .packages-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+    .package-card { background: var(--color-surface); border: 2px solid var(--color-border); border-radius: var(--radius-xl); padding: 2rem 1.75rem 2.25rem; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+    .package-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+    .package-card--starter::before { background: linear-gradient(90deg, var(--color-amber-light), var(--color-amber)); }
+    .package-card--pro::before { background: linear-gradient(90deg, var(--color-purple), var(--color-amber)); }
+    .package-card--enterprise::before { background: linear-gradient(90deg, var(--color-purple-dark), var(--color-purple)); }
+    .package-card--pro { border-color: var(--color-purple); box-shadow: var(--shadow-purple), var(--shadow-lg); }
+    .package-popular { position: absolute; top: 1.25rem; right: 1.25rem; background: var(--color-purple); color: white; font-size: 0.6875rem; font-weight: 700; padding: 0.2rem 0.625rem; border-radius: var(--radius-full); }
+    .package-name { font-size: 1.25rem; font-weight: 800; color: var(--color-text); letter-spacing: -0.02em; margin-bottom: 0.375rem; }
+    .package-tagline { font-size: 0.875rem; color: var(--color-text-secondary); margin-bottom: 1.25rem; }
+    .package-price { display: flex; align-items: baseline; gap: 0.25rem; margin-bottom: 0.25rem; }
+    .package-price__currency { font-size: 1.125rem; font-weight: 700; color: var(--color-text-secondary); align-self: flex-start; padding-top: 0.25rem; }
+    .package-price__amount { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.04em; color: var(--color-text); line-height: 1; }
+    .package-vat { font-size: 0.75rem; color: var(--color-text-muted); margin-bottom: 1.5rem; }
+    .package-divider { height: 1px; background: var(--color-border); margin-bottom: 1.25rem; }
+    .package-includes { list-style: none; display: flex; flex-direction: column; gap: 0.625rem; margin-bottom: 1.75rem; flex: 1; }
+    .package-includes li { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem; color: var(--color-text-secondary); }
+    .pkg-check { width: 1.125rem; height: 1.125rem; min-width: 1.125rem; background: var(--color-green-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--color-green); flex-shrink: 0; margin-top: 1px; }
+
+    /* INCLUDES GRID */
+    .includes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .include-item { display: flex; align-items: flex-start; gap: 0.875rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.125rem; box-shadow: var(--shadow-sm); }
+    .include-item__icon { width: 2.5rem; height: 2.5rem; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .include-item__title { font-size: 0.9rem; font-weight: 700; color: var(--color-text); margin-bottom: 0.125rem; }
+    .include-item__text { font-size: 0.8rem; color: var(--color-text-muted); line-height: 1.4; }
+
+    /* SOFTWARE GRID */
+    .software-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    .sw-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm); }
+    .sw-card__icon { width: 2.75rem; height: 2.75rem; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin-bottom: 0.875rem; }
+    .sw-card__title { font-size: 1rem; font-weight: 700; color: var(--color-text); margin-bottom: 0.25rem; }
+    .sw-card__text { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.55; }
+
+    /* PRODUCT PILLS */
+    .products-pills { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
+    .product-pill { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-full); padding: 0.625rem 1.125rem; display: flex; align-items: center; gap: 0.625rem; box-shadow: var(--shadow-sm); }
+    .product-pill__name { font-size: 0.9rem; font-weight: 600; color: var(--color-text); }
+    .product-pill__price { font-size: 0.9rem; font-weight: 800; color: var(--color-purple); font-variant-numeric: tabular-nums; }
+    .product-pill__sep { width: 1px; height: 0.875rem; background: var(--color-border-strong); }
+
+    /* SUPPORT GRID */
+    .support-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    .support-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.75rem; box-shadow: var(--shadow-sm); display: flex; gap: 1rem; align-items: flex-start; }
+    .support-card__icon { width: 2.75rem; height: 2.75rem; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .support-card__title { font-size: 1rem; font-weight: 700; color: var(--color-text); margin-bottom: 0.25rem; }
+    .support-card__text { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.55; }
+
+    /* ICON BACKGROUNDS */
+    .icon-bg-amber  { background: var(--color-amber-light); }
+    .icon-bg-purple { background: var(--color-purple-light); }
+    .icon-bg-green  { background: var(--color-green-light); }
+    .icon-bg-rose   { background: #ffe4e6; }
+    .icon-bg-blue   { background: #dbeafe; }
+    .icon-bg-teal   { background: #ccfbf1; }
+    .icon-bg-slate  { background: #f1f5f9; }
+    .icon-bg-orange { background: #ffedd5; }
+
+    /* POS RESPONSIVE */
+    @media (min-width: 640px) {
+      .packages-grid { grid-template-columns: 1fr 1fr; }
+      .includes-grid { grid-template-columns: repeat(4, 1fr); }
+      .software-grid { grid-template-columns: 1fr 1fr; }
+      .support-grid  { grid-template-columns: 1fr 1fr; }
+      .hero-pos__actions { flex-direction: row; max-width: none; justify-content: center; }
+      .sync-pair { flex-direction: row; }
+      .sync-arrow { flex-direction: column; }
+      .sync-arrow__line { width: 1px; height: 2rem; background: linear-gradient(to bottom, rgba(124,58,237,0.4), rgba(245,158,11,0.4)); }
+    }
+    @media (min-width: 900px) {
+      .hero-pos__inner { flex-direction: row; text-align: left; align-items: center; gap: 3.5rem; }
+      .hero-pos__content { flex: 1; }
+      .hero-pos__headline { max-width: 15ch; }
+      .hero-pos__eyebrow, .hero-pos__badges { justify-content: flex-start; }
+      .hero-pos__subheadline { margin-inline: 0; }
+      .hero-pos__actions { justify-content: flex-start; flex-direction: row; }
+      .pos-visual { flex: 0 0 26rem; max-width: 26rem; }
+      .packages-grid { grid-template-columns: repeat(3, 1fr); }
+      .software-grid { grid-template-columns: repeat(3, 1fr); }
+      .sync-grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
+      .sync-pair { flex-direction: row; }
+      .sync-arrow { flex-direction: column; }
+      .sync-arrow__line { width: 1px; height: 2.5rem; background: linear-gradient(to bottom, rgba(124,58,237,0.4), rgba(245,158,11,0.4)); }
     }
 
     /* =========================================================
@@ -1307,7 +1923,7 @@
     .form-input:focus {
       outline: none;
       border-color: var(--color-purple);
-      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+      box-shadow: 0 0 0 3px rgba(184, 67, 42, 0.12);
     }
 
     .form-input::placeholder {
@@ -1553,14 +2169,14 @@
         <div class="navbar__nav" role="navigation">
           <a href="#como-funciona">Cómo funciona</a>
           <a href="#funciones">Funciones</a>
-          <a href="pos.html">Komercia POS</a>
           <a href="#precio">Precio</a>
+          <a href="#pos-hardware" class="navbar__link-pos">POS Hardware <span class="navbar__pos-badge">Nuevo</span></a>
           <a href="#contacto">Contacto</a>
         </div>
 
         <!-- Desktop CTA -->
         <div class="navbar__cta">
-          <a href="https://app.komercia.esteban-ams.cl/auth/login/" class="btn btn-ghost btn-sm">Iniciar sesión</a>
+          <a href="/auth/login/" class="btn btn-ghost btn-sm">Iniciar sesión</a>
           <a href="#contacto" class="btn btn-primary btn-sm">Pedir Demo Gratis</a>
         </div>
 
@@ -1582,8 +2198,8 @@
     <div class="mobile-menu" x-show="mobileMenuOpen" x-transition @click="mobileMenuOpen = false">
       <a href="#como-funciona">Cómo funciona</a>
       <a href="#funciones">Funciones</a>
-      <a href="pos.html">Komercia POS</a>
       <a href="#precio">Precio</a>
+      <a href="#pos-hardware">POS Hardware</a>
       <a href="#contacto">Contacto</a>
       <a href="#contacto" class="btn btn-primary btn-sm" style="margin-top: 0.5rem; text-align: center;">Pedir Demo Gratis</a>
     </div>
@@ -1728,15 +2344,15 @@
 
 
   <!-- ============================================================
-       PAIN POINTS SECTION
+       PAIN POINTS + HOW IT WORKS (combined)
        ============================================================ -->
-  <section class="section section--warm" aria-labelledby="pain-title">
+  <section class="section section--warm" id="como-funciona" aria-labelledby="pain-title">
     <div class="container">
       <div class="section__header reveal">
-        <span class="section__eyebrow">¿Te pasa esto?</span>
-        <h2 class="section__title" id="pain-title">Los dolores de cabeza<br>de todo almacenero</h2>
+        <span class="section__eyebrow">¿Te suena familiar?</span>
+        <h2 class="section__title" id="pain-title">El almacén que se maneja solo</h2>
         <p class="section__subtitle">
-          Si alguna de estas situaciones te suena familiar, Komercia es para ti.
+          Tres problemas reales. Una solución directa.
         </p>
       </div>
 
@@ -1745,81 +2361,41 @@
           <span class="pain-card__icon" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--color-amber-dark)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
           </span>
-          <h3 class="pain-card__title">¿Sabes exactamente cuántas unidades tienes de cada producto?</h3>
+          <h3 class="pain-card__title">Stock que no sabes cuánto tienes</h3>
           <p class="pain-card__text">
-            La mayoría de los dueños de almacén no lo saben con exactitud. Contarlo a mano lleva horas. Y eso cuesta plata.
+            Con Komercia cada compra y venta actualiza el inventario. Siempre sabes qué tienes, sin contar a mano.
           </p>
+          <div class="pain-card__step">
+            <span class="pain-card__step-num">1</span>
+            <span class="pain-card__step-label">Ingresa tus productos una sola vez</span>
+          </div>
         </div>
 
         <div class="pain-card reveal reveal-delay-2">
           <span class="pain-card__icon" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--color-purple)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
           </span>
-          <h3 class="pain-card__title">¿Se te han vencido productos sin darte cuenta?</h3>
+          <h3 class="pain-card__title">Productos vencidos que no viste venir</h3>
           <p class="pain-card__text">
-            Cada producto vencido es dinero perdido que ya no recuperas. Komercia te avisa antes de que pase.
+            Komercia te avisa con días de anticipación. Cero pérdidas por vencimiento, cero sorpresas.
           </p>
+          <div class="pain-card__step">
+            <span class="pain-card__step-num">2</span>
+            <span class="pain-card__step-label">Vende y el stock se descuenta solo</span>
+          </div>
         </div>
 
         <div class="pain-card reveal reveal-delay-3">
           <span class="pain-card__icon" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--color-green)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
           </span>
-          <h3 class="pain-card__title">¿Sabes cuál es tu producto más vendido esta semana?</h3>
+          <h3 class="pain-card__title">No sabes qué está funcionando</h3>
           <p class="pain-card__text">
-            Con esa información puedes comprar mejor, negociar con proveedores y ganar más en cada pedido.
+            Cada mañana abre el dashboard y ve qué vendiste, qué necesitas reponer y cuánto ganaste. Todo en un vistazo.
           </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ============================================================
-       HOW IT WORKS
-       ============================================================ -->
-  <section class="section" id="como-funciona" aria-labelledby="steps-title">
-    <div class="container">
-      <div class="section__header reveal">
-        <span class="section__eyebrow">Así de simple</span>
-        <h2 class="section__title" id="steps-title">Tres pasos y listo</h2>
-        <p class="section__subtitle">
-          No necesitas ser experto en computadores. Si usas WhatsApp, puedes usar Komercia.
-        </p>
-      </div>
-
-      <div class="steps">
-        <div class="step reveal reveal-delay-1">
-          <div class="step__number" aria-hidden="true">1</div>
-          <div class="step__body">
-            <h3 class="step__title">Ingresa tus productos</h3>
-            <p class="step__text">
-              Una vez, en minutos. Escanea el código de barra o búscalos por nombre. Nosotros te ayudamos a empezar.
-            </p>
-          </div>
-        </div>
-
-        <div class="steps__connector" aria-hidden="true"></div>
-
-        <div class="step reveal reveal-delay-2">
-          <div class="step__number" aria-hidden="true">2</div>
-          <div class="step__body">
-            <h3 class="step__title">Vende y repón</h3>
-            <p class="step__text">
-              Tu equipo vende desde la caja. El sistema descuenta el stock solo, sin que nadie tenga que hacer nada extra.
-            </p>
-          </div>
-        </div>
-
-        <div class="steps__connector" aria-hidden="true"></div>
-
-        <div class="step reveal reveal-delay-3">
-          <div class="step__number" aria-hidden="true">3</div>
-          <div class="step__body">
-            <h3 class="step__title">Revisa y decide</h3>
-            <p class="step__text">
-              Cada mañana abre Komercia y ve qué vendiste, qué necesitas pedir y si algo está por vencerse. Todo en un vistazo.
-            </p>
+          <div class="pain-card__step">
+            <span class="pain-card__step-num">3</span>
+            <span class="pain-card__step-label">Revisa y decide con datos reales</span>
           </div>
         </div>
       </div>
@@ -1906,162 +2482,592 @@
 
 
   <!-- ============================================================
-       UN DÍA CON KOMERCIA
-       ============================================================ -->
-  <section class="day-section" aria-labelledby="day-title">
-    <div class="container">
-      <div class="section__header reveal">
-        <span class="section__eyebrow">Día a día</span>
-        <h2 class="section__title" id="day-title">Un día con Komercia</h2>
-        <p class="section__subtitle">
-          Así se ve tu rutina cuando el negocio está ordenado.
-        </p>
-      </div>
-
-      <div class="day-timeline">
-
-        <!-- 7:30 AM -->
-        <div class="day-item reveal reveal-delay-1">
-          <div class="day-item__dot" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          </div>
-          <div class="day-item__content">
-            <div class="day-item__time">7:30 AM — Antes de abrir</div>
-            <h3 class="day-item__title">Revisas el resumen de ayer</h3>
-            <p class="day-item__text">Abres Komercia desde el celular antes de salir de la cama. Ves cuánto vendiste, qué productos se movieron y si hay algo por vencerse esta semana.</p>
-          </div>
-        </div>
-
-        <!-- 9:00 AM -->
-        <div class="day-item reveal reveal-delay-2">
-          <div class="day-item__dot" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-          </div>
-          <div class="day-item__content">
-            <div class="day-item__time">9:00 AM — Llega el proveedor</div>
-            <h3 class="day-item__title">Recibes la mercadería en minutos</h3>
-            <p class="day-item__text">Escaneas los productos con el lector o los buscas por nombre. El stock se actualiza solo. Sin planillas, sin contar a mano.</p>
-          </div>
-        </div>
-
-        <!-- 12:00 PM -->
-        <div class="day-item reveal reveal-delay-3">
-          <div class="day-item__dot" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-          </div>
-          <div class="day-item__content">
-            <div class="day-item__time">12:00 PM — Hora pico</div>
-            <h3 class="day-item__title">La caja funciona sola</h3>
-            <p class="day-item__text">Tu cajero vende rápido desde el POS. Efectivo, tarjeta o fiado — todo queda registrado. Tú puedes estar en otro lado y el negocio sigue.</p>
-          </div>
-        </div>
-
-        <!-- 4:00 PM -->
-        <div class="day-item reveal reveal-delay-4">
-          <div class="day-item__dot" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          </div>
-          <div class="day-item__content">
-            <div class="day-item__time">4:00 PM — Tranquilo de la tarde</div>
-            <h3 class="day-item__title">Ves qué está funcionando</h3>
-            <p class="day-item__text">Revisas qué productos se están vendiendo más. Decides si pedir más stock antes de que se agote o aprovechar para liquidar lo que no rota.</p>
-          </div>
-        </div>
-
-        <!-- 6:00 PM -->
-        <div class="day-item reveal reveal-delay-5">
-          <div class="day-item__dot" aria-hidden="true" style="color: var(--color-green);">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          </div>
-          <div class="day-item__content">
-            <div class="day-item__time">6:00 PM — Antes de cerrar</div>
-            <h3 class="day-item__title">Cierras caja sin sorpresas</h3>
-            <p class="day-item__text">El sistema ya sabe cuánto debería haber en caja. Cuadras en segundos y guardas el resumen del día. Listo.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ============================================================
        PRICING
        ============================================================ -->
   <section class="section" id="precio" aria-labelledby="pricing-title">
     <div class="container">
       <div class="section__header reveal">
         <span class="section__eyebrow">¿Cuánto cuesta?</span>
-        <h2 class="section__title" id="pricing-title">Precio simple. Sin sorpresas.</h2>
+        <h2 class="section__title" id="pricing-title">El plan para cada negocio.</h2>
         <p class="section__subtitle">
-          Un solo plan con todo incluido. Sin letra chica, sin cargos ocultos.
+          Sin letra chica ni cargos ocultos. Cancela cuando quieras.
         </p>
       </div>
 
-      <div class="pricing-card reveal">
-        <span class="pricing-badge">El más popular</span>
+      <div class="pricing-grid">
 
-        <div class="pricing-name">Plan Minimarket</div>
+        <!-- ── PLAN BÁSICO ── -->
+        <div class="pricing-card reveal">
+          <div class="pricing-badge-placeholder" aria-hidden="true"></div>
 
-        <div class="pricing-price">
-          <span class="pricing-price__currency">$</span>
-          <span class="pricing-price__amount">29.990</span>
-          <span class="pricing-price__period">&nbsp;/ mes</span>
+          <div class="pricing-name">Básico</div>
+          <p class="pricing-tagline">Para el minimarket que quiere ordenarse y llevar control del día a día.</p>
+
+          <div class="pricing-price">
+            <span class="pricing-price__currency">$</span>
+            <span class="pricing-price__amount">45.000</span>
+            <span class="pricing-price__period">&nbsp;/ mes</span>
+          </div>
+          <p class="pricing-note">Hasta 500 productos · 1 sucursal · 3 usuarios</p>
+
+          <div class="pricing-divider" aria-hidden="true"></div>
+
+          <ul class="pricing-features" aria-label="Incluye plan Básico">
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Punto de Venta (caja)
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Control de inventario en tiempo real
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Ingreso de mercadería con lector
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Escáner de facturas con IA (50/mes)
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Alertas de stock bajo y vencimientos
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Cierre de caja y control de fiados
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Panel de estadísticas y ventas
+            </li>
+            <li class="pricing-item--off">
+              <span class="pricing-cross" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+              Gestión de órdenes de compra
+            </li>
+            <li class="pricing-item--off">
+              <span class="pricing-cross" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+              Boletas y facturas electrónicas (SII)
+            </li>
+            <li class="pricing-item--off">
+              <span class="pricing-cross" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+              Exportar reportes a Excel
+            </li>
+          </ul>
+
+          <a href="#contacto" class="btn btn-secondary btn-full">
+            Pedir Demo Gratis
+          </a>
+          <p class="pricing-no-tricks">Sin contrato · Cancela cuando quieras</p>
         </div>
 
-        <p class="pricing-note">Precio en pesos chilenos. IVA incluido.</p>
+        <!-- ── PLAN PYME (destacado) ── -->
+        <div class="pricing-card pricing-card--featured reveal reveal-delay-1">
+          <span class="pricing-badge"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Más popular</span>
 
-        <div class="pricing-divider" aria-hidden="true"></div>
+          <div class="pricing-name">PyME</div>
+          <p class="pricing-tagline">Para negocios que necesitan gestión completa: compras, proveedores y SII.</p>
 
-        <ul class="pricing-features" aria-label="Incluye">
-          <li>
-            <span class="pricing-check" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg>
-              </span>
-            Caja y punto de venta para tu equipo
-          </li>
-          <li>
-            <span class="pricing-check" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg>
-              </span>
-            Control de bodega e inventario en tiempo real
-          </li>
-          <li>
-            <span class="pricing-check" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg>
-              </span>
-            Alertas de vencimiento y stock bajo
-          </li>
-          <li>
-            <span class="pricing-check" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg>
-              </span>
-            Registro de fiados y cuentas por cobrar
-          </li>
-          <li>
-            <span class="pricing-check" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg>
-              </span>
-            Reportes de ventas desde el celular
-          </li>
-          <li>
-            <span class="pricing-check" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg>
-              </span>
-            Soporte en español por WhatsApp
-          </li>
-        </ul>
+          <div class="pricing-price">
+            <span class="pricing-price__currency">$</span>
+            <span class="pricing-price__amount">75.000</span>
+            <span class="pricing-price__period">&nbsp;/ mes</span>
+          </div>
+          <p class="pricing-note">Hasta 3.000 productos · 2 sucursales · 8 usuarios</p>
 
-        <a href="#contacto" class="btn btn-primary btn-lg btn-full">
-          Pedir Demo Gratis
-        </a>
+          <div class="pricing-divider" aria-hidden="true"></div>
 
-        <p class="pricing-no-tricks">
-          Sin contrato de permanencia · Cancela cuando quieras
-        </p>
-      </div>
+          <ul class="pricing-features" aria-label="Incluye plan PyME">
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Todo lo del plan Básico
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Escáner de facturas con IA (200/mes)
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Gestión de órdenes de compra
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Directorio de proveedores
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Boletas y facturas electrónicas (SII)
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Exportar reportes a Excel
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Hasta 2 sucursales
+            </li>
+            <li class="pricing-item--off">
+              <span class="pricing-cross" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+              Sucursales ilimitadas
+            </li>
+            <li class="pricing-item--off">
+              <span class="pricing-cross" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>
+              Soporte prioritario y dedicado
+            </li>
+          </ul>
+
+          <a href="#contacto" class="btn btn-primary btn-full">
+            Pedir Demo Gratis
+          </a>
+          <p class="pricing-no-tricks">Sin contrato · Cancela cuando quieras</p>
+        </div>
+
+        <!-- ── PLAN PRO ── -->
+        <div class="pricing-card reveal reveal-delay-2">
+          <div class="pricing-badge-placeholder" aria-hidden="true"></div>
+
+          <div class="pricing-name">Pro</div>
+          <p class="pricing-tagline">Para cadenas con múltiples locales que necesitan control total sin límites.</p>
+
+          <div class="pricing-price">
+            <span class="pricing-price__currency">$</span>
+            <span class="pricing-price__amount">120.000</span>
+            <span class="pricing-price__period">&nbsp;/ mes</span>
+          </div>
+          <p class="pricing-note">Productos, sucursales y usuarios ilimitados</p>
+
+          <div class="pricing-divider" aria-hidden="true"></div>
+
+          <ul class="pricing-features" aria-label="Incluye plan Pro">
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Todo lo del plan PyME
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Escáner de facturas con IA (ilimitado)
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Sucursales y usuarios ilimitados
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Gestión de múltiples locales desde una cuenta
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Integración con sistemas externos
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Soporte prioritario con ejecutivo dedicado
+            </li>
+            <li>
+              <span class="pricing-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>
+              Reportes personalizados
+            </li>
+          </ul>
+
+          <a href="#contacto" class="btn btn-secondary btn-full">
+            Pedir Demo Gratis
+          </a>
+          <p class="pricing-no-tricks">Sin contrato · Cancela cuando quieras</p>
+        </div>
+
+      </div><!-- /pricing-grid -->
     </div>
   </section>
+
+
+  <!-- ============================================================
+       KOMERCIA POS HARDWARE
+       ============================================================ -->
+  <div class="pos-section-divider" aria-hidden="true"></div>
+  <section id="pos-hardware" aria-labelledby="pos-hardware-headline">
+
+    <!-- Hero POS -->
+    <div class="hero-pos">
+      <div class="container">
+        <div class="hero-pos__inner">
+          <div class="hero-pos__content">
+            <div class="hero-pos__eyebrow">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              Hardware + Software para minimarkets
+            </div>
+            <h2 class="hero-pos__headline" id="pos-hardware-headline">
+              El punto de venta <span class="hero-pos__headline-accent">completo</span> para tu minimarket
+            </h2>
+            <p class="hero-pos__subheadline">
+              Terminal POS de calidad industrial integrado con Komercia Cloud. Instala hoy, vende mañana. Todo sincronizado en tiempo real.
+            </p>
+            <div class="hero-pos__badges">
+              <span class="hero-badge"><span class="hero-badge__dot" aria-hidden="true"></span>12 meses garantía</span>
+              <span class="hero-badge"><span class="hero-badge__dot" aria-hidden="true"></span>Instalación en 24h</span>
+              <span class="hero-badge"><span class="hero-badge__dot" aria-hidden="true"></span>Capacitación incluida</span>
+            </div>
+            <div class="hero-pos__actions">
+              <a href="#pos-paquetes" class="btn btn-primary btn-lg">Ver paquetes</a>
+              <a href="#contacto" class="btn btn-secondary btn-lg">Solicitar cotización →</a>
+            </div>
+          </div>
+
+          <!-- POS Terminal mockup — light theme -->
+          <div class="pos-visual reveal-scale" aria-hidden="true">
+            <div class="pos-mockup-wrap" role="presentation">
+
+              <!-- Browser chrome -->
+              <div class="pos-mockup-chrome">
+                <span class="pos-mockup-chrome__dot pos-mockup-chrome__dot--red"></span>
+                <span class="pos-mockup-chrome__dot pos-mockup-chrome__dot--yellow"></span>
+                <span class="pos-mockup-chrome__dot pos-mockup-chrome__dot--green"></span>
+                <span class="pos-mockup-chrome__url">app.komercia.cl/pos</span>
+              </div>
+
+              <!-- POS body: two columns -->
+              <div class="pos-mockup-body">
+
+                <!-- Left column -->
+                <div class="pos-col-left">
+                  <!-- Header -->
+                  <div class="pos-topbar">
+                    <span class="pos-topbar__title">Admin Demo</span>
+                    <div class="pos-topbar__icons">
+                      <div class="pos-topbar__icon-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#57534e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                      </div>
+                      <div class="pos-topbar__icon-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#57534e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Search bar -->
+                  <div class="pos-search-row">
+                    <div class="pos-search-input">Escanear código o buscar producto...</div>
+                    <div class="pos-search-btn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                      Búsqueda Avanzada
+                    </div>
+                  </div>
+
+                  <!-- Cart items -->
+                  <div class="pos-cart-items">
+                    <!-- Item 01 -->
+                    <div class="pos-cart-item">
+                      <span class="pos-cart-item__num">01</span>
+                      <span class="pos-cart-item__name">Leche Soprole 1L</span>
+                      <div class="pos-cart-item__qty-group">
+                        <div class="pos-cart-item__qty-btn">−</div>
+                        <span class="pos-cart-item__qty-val">2 un.</span>
+                        <div class="pos-cart-item__qty-btn">+</div>
+                      </div>
+                      <span class="pos-cart-item__price">$2.580</span>
+                    </div>
+                    <!-- Item 02 -->
+                    <div class="pos-cart-item">
+                      <span class="pos-cart-item__num">02</span>
+                      <span class="pos-cart-item__name">Pan Hallulla</span>
+                      <span class="pos-cart-item__badge">⚖ balanza</span>
+                      <div class="pos-cart-item__qty-group">
+                        <div class="pos-cart-item__qty-btn">−</div>
+                        <span class="pos-cart-item__qty-val">0.748 kg</span>
+                        <div class="pos-cart-item__qty-btn">+</div>
+                      </div>
+                      <span class="pos-cart-item__price">$2.394</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right column -->
+                <div class="pos-col-right">
+                  <!-- Weight + fiados -->
+                  <div class="pos-weight-row">
+                    <div class="pos-weight">
+                      <span class="pos-weight__dot"></span>
+                      1.495 kg
+                    </div>
+                    <div class="pos-fiados-badge">FIADOS 3</div>
+                  </div>
+
+                  <!-- Sale card -->
+                  <div class="pos-sale-card">
+                    <div class="pos-sale-card__title">VENTA #15041</div>
+                    <div class="pos-sale-card__sub">2 productos</div>
+                  </div>
+
+                  <!-- Price breakdown -->
+                  <div class="pos-breakdown">
+                    <div class="pos-breakdown__row">
+                      <span>Subtotal</span><span>$4.176</span>
+                    </div>
+                    <div class="pos-breakdown__row">
+                      <span>IVA (19%)</span><span>$798</span>
+                    </div>
+                    <div class="pos-total-row">
+                      <span class="pos-total-label">TOTAL</span>
+                      <span class="pos-total-amount">$4.974</span>
+                    </div>
+                  </div>
+
+                  <!-- Pay button -->
+                  <div class="pos-pay-action">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                    PAGAR $4.974
+                  </div>
+
+                  <!-- Cancel -->
+                  <div class="pos-cancel-action">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    Cancelar Venta
+                  </div>
+
+                  <div class="pos-brand-badge">
+                    <span class="pos-brand-dot"></span>
+                    Vanguardista Aa
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Bottom nav bar -->
+              <div class="pos-bottom-nav">
+                <div class="pos-nav-item">
+                  <div class="pos-nav-item__icon pos-nav-item__icon--active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8432A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  </div>
+                  <span class="pos-nav-item__label pos-nav-item__label--active">Inicio</span>
+                </div>
+                <div class="pos-nav-item">
+                  <div class="pos-nav-item__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a8a29e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                  </div>
+                  <span class="pos-nav-item__label pos-nav-item__label--muted">Inventario</span>
+                </div>
+                <div class="pos-nav-item">
+                  <div class="pos-nav-item__icon pos-nav-item__icon--sell">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                  </div>
+                  <span class="pos-nav-item__label pos-nav-item__label--sell">Vender</span>
+                </div>
+                <div class="pos-nav-item">
+                  <div class="pos-nav-item__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a8a29e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                  </div>
+                  <span class="pos-nav-item__label pos-nav-item__label--muted">Proveedores</span>
+                </div>
+                <div class="pos-nav-item">
+                  <div class="pos-nav-item__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a8a29e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                  </div>
+                  <span class="pos-nav-item__label pos-nav-item__label--muted">Más</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sincronía POS ↔ Cloud -->
+    <div class="section section--dark" aria-labelledby="sync-title">
+      <div class="container">
+        <div class="section__header reveal">
+          <span class="section__eyebrow">Diferenciador clave</span>
+          <h3 class="section__title" id="sync-title">Tu POS y la nube, siempre conectados</h3>
+          <p class="section__subtitle">Lo que pasa en caja se refleja al instante en Komercia Cloud. Y al revés. Sin intervención manual.</p>
+        </div>
+        <div class="sync-grid">
+          <div class="sync-pair reveal reveal-delay-1">
+            <div class="sync-card">
+              <div class="sync-card__icon sync-card__icon--purple">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </div>
+              <div class="sync-card__title">Komercia POS</div>
+              <div class="sync-card__text">Terminal local en tu minimarket. Funciona aunque se corte internet.</div>
+            </div>
+            <div class="sync-arrow" aria-hidden="true">
+              <div class="sync-arrow__line"></div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(167,139,250,0.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+              <div class="sync-arrow__line"></div>
+            </div>
+            <div class="sync-card">
+              <div class="sync-card__icon sync-card__icon--amber">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+              </div>
+              <div class="sync-card__title">Komercia Cloud</div>
+              <div class="sync-card__text">Accede desde cualquier dispositivo. Informes, stock y ventas en tiempo real.</div>
+            </div>
+          </div>
+          <div class="sync-benefits reveal reveal-delay-2">
+            <div class="sync-benefit">
+              <div class="sync-benefit__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+              <div class="sync-benefit__title">Instantáneo</div>
+              <div class="sync-benefit__text">Cada venta se sincroniza en milisegundos.</div>
+            </div>
+            <div class="sync-benefit">
+              <div class="sync-benefit__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div class="sync-benefit__title">Seguro</div>
+              <div class="sync-benefit__text">Respaldo automático. Tus datos nunca se pierden.</div>
+            </div>
+            <div class="sync-benefit">
+              <div class="sync-benefit__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div>
+              <div class="sync-benefit__title">Sin internet</div>
+              <div class="sync-benefit__text">El POS sigue vendiendo offline. Al volver la conexión, sincroniza solo.</div>
+            </div>
+            <div class="sync-benefit">
+              <div class="sync-benefit__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              <div class="sync-benefit__title">24/7</div>
+              <div class="sync-benefit__text">Revisa tu negocio a cualquier hora desde el teléfono.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paquetes de hardware -->
+    <div class="section" id="pos-paquetes" aria-labelledby="packages-title">
+      <div class="container">
+        <div class="section__header reveal">
+          <span class="section__eyebrow">Equipamiento completo</span>
+          <h3 class="section__title" id="packages-title">Elige tu paquete POS</h3>
+          <p class="section__subtitle">Todo viene configurado y listo para funcionar. Solo conéctalo y empieza a vender.</p>
+        </div>
+        <div class="packages-grid">
+          <div class="package-card package-card--starter reveal reveal-delay-1">
+            <div class="package-name">POS Starter</div>
+            <div class="package-tagline">Para comenzar con lo esencial</div>
+            <div class="package-price"><span class="package-price__currency">$</span><span class="package-price__amount">349.990</span></div>
+            <div class="package-vat">Precio en pesos chilenos · IVA incluido</div>
+            <div class="package-divider"></div>
+            <ul class="package-includes">
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>Terminal 15.6" táctil</li>
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>Impresora térmica 80mm</li>
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>Cajón portamonedas estándar</li>
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>Software Komercia POS instalado</li>
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>1 mes Komercia Cloud incluido</li>
+            </ul>
+            <a href="#contacto" class="btn btn-secondary btn-full">Solicitar cotización</a>
+          </div>
+          <div class="package-card package-card--pro reveal reveal-delay-2">
+            <span class="package-popular">El más vendido</span>
+            <div class="package-name">POS Pro</div>
+            <div class="package-tagline">El más completo para el día a día</div>
+            <div class="package-price"><span class="package-price__currency">$</span><span class="package-price__amount">549.990</span></div>
+            <div class="package-vat">Precio en pesos chilenos · IVA incluido</div>
+            <div class="package-divider"></div>
+            <ul class="package-includes">
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>Terminal 15.6" Full HD táctil</li>
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>Impresora térmica 80mm</li>
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>Lector de códigos de barra USB</li>
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>Cajón portamonedas reforzado</li>
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>3 meses Komercia Cloud incluido</li>
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>Capacitación presencial (2h)</li>
+            </ul>
+            <a href="#contacto" class="btn btn-primary btn-full">Solicitar cotización</a>
+          </div>
+          <div class="package-card package-card--enterprise reveal reveal-delay-3">
+            <div class="package-name">POS Enterprise</div>
+            <div class="package-tagline">Para negocios exigentes con todo</div>
+            <div class="package-price"><span class="package-price__currency">$</span><span class="package-price__amount">849.990</span></div>
+            <div class="package-vat">Precio en pesos chilenos · IVA incluido</div>
+            <div class="package-divider"></div>
+            <ul class="package-includes">
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>Terminal 17" Full HD táctil</li>
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>Impresora térmica 80mm alta velocidad</li>
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>Lector inalámbrico de códigos</li>
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>Balanza electrónica integrada</li>
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>6 meses Komercia Cloud incluido</li>
+              <li><span class="pkg-check" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 12 4 10"/></svg></span>Soporte VIP por WhatsApp</li>
+            </ul>
+            <a href="#contacto" class="btn btn-secondary btn-full">Solicitar cotización</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Qué incluye -->
+    <div class="section section--warm" aria-labelledby="includes-title">
+      <div class="container">
+        <div class="section__header reveal">
+          <span class="section__eyebrow">Sin letra chica</span>
+          <h3 class="section__title" id="includes-title">Todo listo para funcionar</h3>
+          <p class="section__subtitle">Cada paquete incluye hardware, software, instalación y capacitación. Sin costos ocultos.</p>
+        </div>
+        <div class="includes-grid">
+          <div class="include-item reveal reveal-delay-1"><div class="include-item__icon icon-bg-blue"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div><div class="include-item__title">Terminal táctil</div><div class="include-item__text">Pantalla HD resistente para uso intensivo</div></div></div>
+          <div class="include-item reveal reveal-delay-2"><div class="include-item__icon icon-bg-amber"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-amber-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div><div><div class="include-item__title">Impresora</div><div class="include-item__text">Boletas y recibos térmicos de alta velocidad</div></div></div>
+          <div class="include-item reveal reveal-delay-3"><div class="include-item__icon icon-bg-purple"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="3" y2="16"/><line x1="7" y1="6" x2="7" y2="18"/><line x1="11" y1="8" x2="11" y2="16"/><line x1="15" y1="6" x2="15" y2="18"/><line x1="19" y1="8" x2="19" y2="16"/></svg></div><div><div class="include-item__title">Lector de barras</div><div class="include-item__text">Escaneo rápido USB o inalámbrico</div></div></div>
+          <div class="include-item reveal reveal-delay-4"><div class="include-item__icon icon-bg-green"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="22" height="13" rx="2"/><path d="M12 12v3"/><path d="M9 9v6"/><path d="M15 9v6"/><path d="M6 11v2"/><path d="M18 11v2"/></svg></div><div><div class="include-item__title">Cajón portamonedas</div><div class="include-item__text">Con apertura automática al finalizar venta</div></div></div>
+          <div class="include-item reveal reveal-delay-1"><div class="include-item__icon icon-bg-rose"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div><div class="include-item__title">Software POS</div><div class="include-item__text">Komercia instalado y configurado</div></div></div>
+          <div class="include-item reveal reveal-delay-2"><div class="include-item__icon icon-bg-teal"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div><div><div class="include-item__title">Komercia Cloud</div><div class="include-item__text">Acceso al panel web desde cualquier dispositivo</div></div></div>
+          <div class="include-item reveal reveal-delay-3"><div class="include-item__icon icon-bg-orange"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div><div class="include-item__title">Instalación</div><div class="include-item__text">Técnico a domicilio en menos de 24h</div></div></div>
+          <div class="include-item reveal reveal-delay-4"><div class="include-item__icon icon-bg-slate"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="include-item__title">Capacitación</div><div class="include-item__text">Entrenamiento para tu equipo al momento de instalar</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Software features -->
+    <div class="section section--ocher" aria-labelledby="software-title">
+      <div class="container">
+        <div class="section__header reveal">
+          <span class="section__eyebrow">Komercia POS Software</span>
+          <h3 class="section__title" id="software-title">Diseñado para minimarkets chilenos</h3>
+          <p class="section__subtitle">No es un software genérico. Cada función existe porque un almacenero la necesita.</p>
+        </div>
+        <div class="software-grid">
+          <div class="sw-card reveal reveal-delay-1"><div class="sw-card__icon icon-bg-purple"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="sw-card__title">Ultra rápido</div><div class="sw-card__text">Cobra en segundos. Escanea, totaliza y emite boleta sin fricciones. Diseñado para hora pico.</div></div>
+          <div class="sw-card reveal reveal-delay-2"><div class="sw-card__icon icon-bg-green"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div><div class="sw-card__title">Funciona offline</div><div class="sw-card__text">Si se corta internet no para el negocio. Sigue vendiendo y sincroniza cuando vuelve la señal.</div></div>
+          <div class="sw-card reveal reveal-delay-3"><div class="sw-card__icon icon-bg-amber"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-amber-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div><div class="sw-card__title">Boleta electrónica</div><div class="sw-card__text">Emisión automática de boletas SII. Cumple con la ley tributaria chilena sin complicaciones.</div></div>
+          <div class="sw-card reveal reveal-delay-1"><div class="sw-card__icon icon-bg-blue"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><div class="sw-card__title">Control de stock</div><div class="sw-card__text">Cada venta descuenta automáticamente. Ver en tiempo real lo que queda en bodega.</div></div>
+          <div class="sw-card reveal reveal-delay-2"><div class="sw-card__icon icon-bg-rose"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="sw-card__title">Multi-cajero</div><div class="sw-card__text">Varios usuarios con sus propias claves. Cada venta queda con el nombre del cajero.</div></div>
+          <div class="sw-card reveal reveal-delay-3"><div class="sw-card__icon icon-bg-teal"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div class="sw-card__title">Múltiples pagos</div><div class="sw-card__text">Efectivo, débito, crédito, fiado. Incluso pagos mixtos. Todo en una sola pantalla.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Productos individuales -->
+    <div class="section" aria-labelledby="products-pos-title">
+      <div class="container">
+        <div class="section__header reveal">
+          <span class="section__eyebrow">Piezas sueltas</span>
+          <h3 class="section__title" id="products-pos-title">¿Necesitas algo específico?</h3>
+          <p class="section__subtitle">Si ya tienes parte del equipo, podemos completarlo. Precios por pieza sin compromiso.</p>
+        </div>
+        <div class="products-pills reveal">
+          <div class="product-pill"><span class="product-pill__name">Terminal 15.6"</span><div class="product-pill__sep"></div><span class="product-pill__price">$189.990</span></div>
+          <div class="product-pill"><span class="product-pill__name">Terminal 17"</span><div class="product-pill__sep"></div><span class="product-pill__price">$249.990</span></div>
+          <div class="product-pill"><span class="product-pill__name">Impresora térmica</span><div class="product-pill__sep"></div><span class="product-pill__price">$79.990</span></div>
+          <div class="product-pill"><span class="product-pill__name">Lector barras USB</span><div class="product-pill__sep"></div><span class="product-pill__price">$29.990</span></div>
+          <div class="product-pill"><span class="product-pill__name">Lector inalámbrico</span><div class="product-pill__sep"></div><span class="product-pill__price">$49.990</span></div>
+          <div class="product-pill"><span class="product-pill__name">Cajón estándar</span><div class="product-pill__sep"></div><span class="product-pill__price">$39.990</span></div>
+          <div class="product-pill"><span class="product-pill__name">Cajón reforzado</span><div class="product-pill__sep"></div><span class="product-pill__price">$59.990</span></div>
+          <div class="product-pill"><span class="product-pill__name">Balanza electrónica</span><div class="product-pill__sep"></div><span class="product-pill__price">$89.990</span></div>
+        </div>
+        <p style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--color-text-muted);">Todos los precios en pesos chilenos, IVA incluido. Cotiza tu combinación por WhatsApp.</p>
+      </div>
+    </div>
+
+    <!-- Soporte -->
+    <div class="section section--warm" aria-labelledby="soporte-pos-title">
+      <div class="container">
+        <div class="section__header reveal">
+          <span class="section__eyebrow">Respaldo permanente</span>
+          <h3 class="section__title" id="soporte-pos-title">Nunca vas a estar solo</h3>
+          <p class="section__subtitle">Tu equipo tiene que seguir funcionando. Cuando algo falla, estamos ahí.</p>
+        </div>
+        <div class="support-grid">
+          <div class="support-card reveal reveal-delay-1"><div class="support-card__icon icon-bg-green"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div class="support-card__title">Soporte técnico directo</div><div class="support-card__text">Por WhatsApp o email. Respondemos en horas, no en días. En español, sin tecnicismos.</div></div></div>
+          <div class="support-card reveal reveal-delay-2"><div class="support-card__icon icon-bg-purple"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="support-card__title">Garantía 12 meses</div><div class="support-card__text">Todo el hardware viene con un año de garantía. Si algo falla, lo reemplazamos sin costo.</div></div></div>
+          <div class="support-card reveal reveal-delay-3"><div class="support-card__icon icon-bg-amber"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-amber-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div><div class="support-card__title">Visitas técnicas</div><div class="support-card__text">Si el problema no se resuelve a distancia, mandamos un técnico a tu local. Sin cobro adicional el primer año.</div></div></div>
+          <div class="support-card reveal reveal-delay-4"><div class="support-card__icon icon-bg-teal"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div><div><div class="support-card__title">Actualizaciones gratis</div><div class="support-card__text">El software se actualiza automáticamente. Siempre tienes las últimas funciones sin pagar más.</div></div></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+  <!-- /pos-hardware -->
 
 
   <!-- ============================================================
@@ -2120,8 +3126,8 @@
               <span style="font-weight: 800; font-size: 0.875rem; color: #1c1917;">Minimarket Fuentes</span>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
-              <div style="width: 28px; height: 28px; background: #ede9fe; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <div style="width: 28px; height: 28px; background: rgba(184, 67, 42, 0.10); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8432A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
               </div>
               <div style="width: 28px; height: 28px; background: #f0ece3; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#57534e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -2140,7 +3146,7 @@
 
             <!-- KPI grid -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;">
-              <div style="background: #fff; border-radius: 12px; padding: 12px; border-left: 3px solid #7c3aed;">
+              <div style="background: #fff; border-radius: 12px; padding: 12px; border-left: 3px solid #B8432A;">
                 <p style="font-size: 0.6rem; font-weight: 700; color: #a8a29e; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Ventas hoy</p>
                 <p style="font-size: 1.1rem; font-weight: 800; color: #1c1917; font-family: 'JetBrains Mono', monospace;">$184.500</p>
                 <p style="font-size: 0.65rem; color: #10b981; font-weight: 600;">23 transacciones</p>
@@ -2183,10 +3189,10 @@
                 <div style="width: 100%; height: 35px; background: #a78bfa; border-radius: 3px 3px 0 0;"></div>
               </div>
               <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;">
-                <div style="width: 100%; height: 48px; background: #7c3aed; border-radius: 3px 3px 0 0;"></div>
+                <div style="width: 100%; height: 48px; background: #B8432A; border-radius: 3px 3px 0 0;"></div>
               </div>
               <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;">
-                <div style="width: 100%; height: 14px; background: #ede9fe; border-radius: 3px 3px 0 0; border: 1px dashed #c4b5fd;"></div>
+                <div style="width: 100%; height: 14px; background: rgba(184, 67, 42, 0.10); border-radius: 3px 3px 0 0; border: 1px dashed rgba(184, 67, 42, 0.3);"></div>
               </div>
             </div>
 
@@ -2198,21 +3204,21 @@
                   <span style="width: 18px; height: 18px; background: #fef3c7; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 800; color: #d97706;">1</span>
                   <span style="font-size: 0.75rem; font-weight: 600; color: #1c1917;">Leche Soprole 1L</span>
                 </div>
-                <span style="font-size: 0.75rem; font-weight: 700; color: #7c3aed;">$24.200</span>
+                <span style="font-size: 0.75rem; font-weight: 700; color: #B8432A;">$24.200</span>
               </div>
               <div style="background: #fff; border-radius: 8px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                   <span style="width: 18px; height: 18px; background: #f1f5f9; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 800; color: #64748b;">2</span>
                   <span style="font-size: 0.75rem; font-weight: 600; color: #1c1917;">Pan marraqueta kg</span>
                 </div>
-                <span style="font-size: 0.75rem; font-weight: 700; color: #7c3aed;">$18.500</span>
+                <span style="font-size: 0.75rem; font-weight: 700; color: #B8432A;">$18.500</span>
               </div>
               <div style="background: #fff; border-radius: 8px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                   <span style="width: 18px; height: 18px; background: #f1f5f9; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 800; color: #64748b;">3</span>
                   <span style="font-size: 0.75rem; font-weight: 600; color: #1c1917;">Coca-Cola 1.5L</span>
                 </div>
-                <span style="font-size: 0.75rem; font-weight: 700; color: #7c3aed;">$15.800</span>
+                <span style="font-size: 0.75rem; font-weight: 700; color: #B8432A;">$15.800</span>
               </div>
             </div>
 
@@ -2221,10 +3227,10 @@
           <!-- Footer tab bar -->
           <div style="background: #fff; border-top: 1px solid #e7e2d8; display: flex; justify-content: space-around; padding: 8px 0 6px;">
             <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
-              <div style="width: 28px; height: 28px; background: #ede9fe; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <div style="width: 28px; height: 28px; background: rgba(184, 67, 42, 0.10); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8432A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
               </div>
-              <span style="font-size: 0.55rem; font-weight: 700; color: #7c3aed;">Inicio</span>
+              <span style="font-size: 0.55rem; font-weight: 700; color: #B8432A;">Inicio</span>
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
               <div style="width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
@@ -2270,7 +3276,7 @@
         <nav class="footer__links" aria-label="Links legales">
           <a href="#">Términos</a>
           <a href="#">Privacidad</a>
-          <a href="https://app.komercia.esteban-ams.cl/auth/login/" class="footer__login">Iniciar sesión</a>
+          <a href="/auth/login/" class="footer__login">Iniciar sesión</a>
         </nav>
       </div>
     </div>
@@ -2278,32 +3284,55 @@
 
 
   <!-- ============================================================
-       JAVASCRIPT — Scroll reveal + minimal logic
+       JAVASCRIPT — Scroll reveal + parallax + minimal logic
        ============================================================ -->
   <script>
-    // Scroll-triggered reveal using IntersectionObserver
     (function () {
       'use strict';
 
-      var observer = new IntersectionObserver(function (entries) {
+      // ── Scroll-triggered reveal with exit ──────────────────────
+      var REVEAL_SELECTORS = '.reveal, .reveal-left, .reveal-right, .reveal-scale';
+
+      var revealObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
+            entry.target.classList.remove('exit');
             entry.target.classList.add('visible');
-            // Unobserve once revealed for performance
-            observer.unobserve(entry.target);
+          } else if (entry.target.classList.contains('visible')) {
+            // scroll-out: apply exit only when leaving through the top
+            var rect = entry.boundingClientRect;
+            if (rect.bottom < 0) {
+              entry.target.classList.add('exit');
+            }
           }
         });
       }, {
-        threshold: 0.12,
+        threshold: 0.10,
         rootMargin: '0px 0px -40px 0px'
       });
 
-      // Observe all .reveal elements
-      document.querySelectorAll('.reveal').forEach(function (el) {
-        observer.observe(el);
+      document.querySelectorAll(REVEAL_SELECTORS).forEach(function (el) {
+        revealObserver.observe(el);
       });
 
-      // Smooth scroll polyfill for older Safari
+      // ── Hero parallax ──────────────────────────────────────────
+      var heroVisual = document.querySelector('.hero__visual');
+      if (heroVisual && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+        var ticking = false;
+        window.addEventListener('scroll', function () {
+          if (!ticking) {
+            window.requestAnimationFrame(function () {
+              var scrollY = window.scrollY || window.pageYOffset;
+              var shift = Math.min(scrollY * 0.08, 40);
+              heroVisual.style.transform = 'translateY(' + shift + 'px)';
+              ticking = false;
+            });
+            ticking = true;
+          }
+        }, { passive: true });
+      }
+
+      // ── Smooth scroll polyfill for older Safari ────────────────
       document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
         anchor.addEventListener('click', function (e) {
           var target = document.querySelector(this.getAttribute('href'));
